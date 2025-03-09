@@ -102,7 +102,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="/assets/frontend_assets/logo.png"
+              src="/assets/frontend_assets/logo/logo.png"
               alt="NOZE Perfumes"
               width={120}
               height={40}
@@ -252,7 +252,7 @@ export default function Navbar() {
                           <div key={`${item.id}-${item.size}`} className="flex items-center p-4 border-b border-primary/5">
                             <div className="w-14 h-14 relative rounded-md overflow-hidden bg-background-primary shrink-0">
                               <Image
-                                src={item.image || '/assets/frontend_assets/products/placeholder.jpg'}
+                                src={'/assets/frontend_assets/products/placeholdr.svg'}
                                 alt={item.name}
                                 fill
                                 className="object-cover"
