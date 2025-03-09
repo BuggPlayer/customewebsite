@@ -1,47 +1,59 @@
 import Link from 'next/link';
-import Image from 'next/image';
-import { assets } from '@/utils/assetHelper';
 
 const Hero = () => {
   return (
-    <div className="relative h-screen">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <Image
-          src={assets.backgrounds.hero}
-          alt="Hero Background"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-black opacity-50"></div>
+    <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800">
+      {/* Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute w-96 h-96 -top-48 -left-48 bg-[#d2a34b]/10 rounded-full blur-3xl"></div>
+        <div className="absolute w-96 h-96 -bottom-48 -right-48 bg-[#d2a34b]/10 rounded-full blur-3xl"></div>
       </div>
       
       {/* Content */}
-      <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
+      <div className="relative container mx-auto px-4 h-screen flex flex-col justify-center items-center text-center">
         <div className="max-w-3xl">
-          <div className="w-20 h-[1px] bg-[#d2a34b] mx-auto mb-8"></div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-light tracking-wider text-white mb-6">DISCOVER YOUR SIGNATURE SCENT</h1>
-          <p className="text-lg text-white/80 mb-10 max-w-xl mx-auto">
+          {/* Animated Line */}
+          <div className="w-20 h-[2px] bg-gradient-to-r from-transparent via-[#d2a34b] to-transparent mx-auto mb-8 animate-pulse"></div>
+          
+          {/* Main Content */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-light tracking-wider text-white mb-6 animate-fade-in">
+            DISCOVER YOUR
+            <span className="block mt-2 bg-gradient-to-r from-[#d2a34b] to-[#e3b55b] bg-clip-text text-transparent">
+              SIGNATURE SCENT
+            </span>
+          </h1>
+          
+          <p className="text-lg text-white/80 mb-10 max-w-xl mx-auto leading-relaxed">
             Luxury fragrances that elevate your presence and leave a lasting impression.
           </p>
+          
+          {/* Buttons with enhanced hover effects */}
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <Link href="/products" className="bg-[#d2a34b] text-black px-8 py-4 uppercase tracking-wider font-light hover:bg-[#c69544] transition-colors duration-300">
-              Shop Now
+            <Link 
+              href="/products" 
+              className="group relative overflow-hidden bg-[#d2a34b] text-black px-8 py-4 uppercase tracking-wider font-light transition-transform duration-300 hover:scale-105"
+            >
+              <span className="relative z-10">Shop Now</span>
+              <div className="absolute inset-0 bg-[#c69544] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             </Link>
-            <Link href="/collections" className="border border-[#d2a34b] text-[#d2a34b] px-8 py-4 uppercase tracking-wider font-light hover:bg-[#d2a34b] hover:text-black transition-all duration-300">
-              Explore Collections
+            
+            <Link 
+              href="/collections" 
+              className="group relative overflow-hidden border border-[#d2a34b] text-[#d2a34b] px-8 py-4 uppercase tracking-wider font-light transition-transform duration-300 hover:scale-105"
+            >
+              <span className="relative z-10 group-hover:text-black transition-colors duration-300">Explore Collections</span>
+              <div className="absolute inset-0 bg-[#d2a34b] transform origin-right scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             </Link>
           </div>
         </div>
       </div>
       
-      {/* Scroll Down Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/70 flex flex-col items-center animate-pulse">
-        <span className="text-xs uppercase tracking-widest mb-2">Scroll</span>
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-        </svg>
+      {/* Enhanced Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/70 flex flex-col items-center">
+        <span className="text-xs uppercase tracking-widest mb-2 animate-pulse">Scroll</span>
+        <div className="w-6 h-12 border-2 border-white/30 rounded-full p-1">
+          <div className="w-1.5 h-1.5 bg-white/70 rounded-full mx-auto animate-bounce-slow"></div>
+        </div>
       </div>
     </div>
   );

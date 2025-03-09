@@ -2,6 +2,8 @@ import { Montserrat } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -20,7 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${montserrat.variable} font-primary bg-background text-textColor-primary`}>
         <WishlistProvider>
           <CartProvider>
+          <Navbar/>
             {children}
+            <Footer />
           </CartProvider>
         </WishlistProvider>
       </body>

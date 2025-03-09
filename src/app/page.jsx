@@ -1,13 +1,11 @@
-import HeroSlider from '@/components/home/HeroSlider';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 import BrandStory from '@/components/home/BrandStory';
 import Testimonials from '@/components/home/Testimonials';
 import NewsletterSignup from '@/components/home/NewsletterSignup';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import Hero from '@/components/home/Hero';
 // Mock collections data
 const collections = [
   {
@@ -33,12 +31,13 @@ const collections = [
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-textColor-secondary">
-      <Navbar />
+    
       
       <main>
         {/* Hero Slider */}
-        <HeroSlider />
-        
+   
+        {/* <HeroSlider /> */}
+        <Hero />
         {/* Featured Products */}
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
@@ -133,7 +132,7 @@ export default function Home() {
         <NewsletterSignup />
       </main>
       
-      <Footer />
+  
     </div>
   );
 } 
