@@ -5,8 +5,8 @@ import Link from 'next/link';
 
 export default function SignInForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams ? searchParams.get('callbackUrl') || '/' : '/';
+  // const searchParams = useSearchParams();
+  // const callbackUrl = searchParams ? searchParams.get('callbackUrl') || '/' : '/';
   
   const [formData, setFormData] = useState({
     email: '',
@@ -81,7 +81,7 @@ export default function SignInForm() {
         }));
         
         // Redirect to the callback URL or home page
-        router.push(callbackUrl);
+        router.push('/');
       } else {
         setLoginError('Invalid email or password. Try using "user@example.com" and "password"');
         setIsSubmitting(false);

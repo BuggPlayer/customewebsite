@@ -35,15 +35,15 @@ const ProductCard = ({ product }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link href={`/products/${id}`} className="block aspect-square overflow-hidden">
-        <div className="relative w-full h-full transform transition-transform duration-500 group-hover:scale-105">
+      <Link href={`/products/${id}`} className="block aspect-[3/4] relative w-full overflow-hidden">
+        <div className="relative w-full h-full transform transition-transform duration-300 group-hover:scale-105">
           <Image 
             src={'/assets/frontend_assets/products/placeholdr.svg'}
             alt={name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority
-            className="object-cover"
+            priority={false}
+            className="object-cover object-center"
           />
           
           {discount > 0 && (

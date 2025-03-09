@@ -122,7 +122,8 @@ export default function HeroSlider() {
               alt={slide.title}
               fill
               priority={index === 0}
-              className="object-cover"
+              sizes="100vw"
+              className="object-cover object-center"
             />
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
