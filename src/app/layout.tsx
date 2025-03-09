@@ -13,7 +13,7 @@ export const metadata = {
   description: 'Discover a world of exquisite fragrances at NOZE Perfumes.',
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={`${montserrat.variable} font-primary bg-background text-textColor-primary`}>
