@@ -25,7 +25,7 @@ export default function Navbar() {
       try {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
-          setUser(JSON.parse(storedUser));
+          setUser(JSON.parse("storedUser"));
         } else {
           setUser(null);
         }
@@ -414,20 +414,24 @@ export default function Navbar() {
                 </div>
                 
                 <div className="grid grid-cols-2 gap-2">
-                  <Link
-                    href="/cart"
+                  <button
+                    onClick={() => {
+                      setIsCartOpen(false);
+                      router.push('/cart');
+                    }}
                     className="btn-outline-primary py-2 text-center text-sm"
-                    onClick={() => setIsCartOpen(false)}
                   >
                     View Cart
-                  </Link>
-                  <Link
-                    href="/checkout"
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsCartOpen(false);
+                      router.push('/checkout');
+                    }}
                     className="btn-primary py-2 text-center text-sm"
-                    onClick={() => setIsCartOpen(false)}
                   >
                     Checkout
-                  </Link>
+                  </button>
                 </div>
               </div>
             </>

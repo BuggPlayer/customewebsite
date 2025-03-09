@@ -128,7 +128,7 @@ export default function HeroSlider() {
           </div>
           
           {/* Content */}
-          <div className="relative z-10 h-full container mx-auto px-4 py-16 flex flex-col justify-center">
+          {/* <div className="relative z-10 h-full container mx-auto px-4 py-16 flex flex-col justify-center">
             <div className={`max-w-xl ${getAlignmentClasses(slide.alignment)} mx-auto md:mx-0`}>
               <div 
                 className={`transform transition-transform duration-[1200ms] delay-300 ${
@@ -152,7 +152,7 @@ export default function HeroSlider() {
                 </Link>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       ))}
       
