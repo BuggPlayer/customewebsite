@@ -1,32 +1,37 @@
 "use client"
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
-import { fetchProducts } from '@/utils/productService';
+import { useWishlist } from '@/context/WishlistContext';
 
 const ProductCard = ({ product }) => {
   const { id, name, price, discountPrice, discount, images, category } = product;
   const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   
   const handleAddToCart = (e) => {
     e.preventDefault();
     setIsAddingToCart(true);
-    
-    // Add a default size for the quick add
     addToCart({
       ...product,
       size: '50ml',
       quantity: 1
     });
-    
-    // Reset button state after a short delay
     setTimeout(() => {
       setIsAddingToCart(false);
     }, 1000);
+  };
+
+  const handleWishlistClick = (e) => {
+    e.preventDefault();
+    if (isInWishlist(id)) {
+      removeFromWishlist(id);
+    } else {
+      addToWishlist(product);
+    }
   };
   
   return (
@@ -42,9 +47,28 @@ const ProductCard = ({ product }) => {
             alt={name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority={false}
             className="object-cover object-center"
           />
+          
+          {/* Wishlist Button */}
+          <button
+            onClick={handleWishlistClick}
+            className="absolute top-4 left-4 z-10 p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors"
+          >
+            <svg
+              className={`w-5 h-5 ${isInWishlist(id) ? 'text-primary' : 'text-white'}`}
+              fill={isInWishlist(id) ? 'currentColor' : 'none'}
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
+            </svg>
+          </button>
           
           {discount > 0 && (
             <div className="absolute top-4 right-4 bg-primary text-black px-2 py-1 text-xs font-medium">
