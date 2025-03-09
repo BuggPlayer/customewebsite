@@ -1,12 +1,13 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/products/ProductCard';
 import { fetchProducts } from '@/utils/productService';
 
-export default function ProductsPage() {
+// This is a client-only component that handles search params
+function ProductsContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category');
   
@@ -99,24 +100,15 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-textColor-secondary font-primary">
-      <Navbar />
-      
-      {/* Page Header */}
-      <div className="relative py-16 md:py-24 bg-background-secondary">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-5xl font-light text-primary mb-4">Our Collections</h1>
-          <p className="text-textColor-muted max-w-2xl mx-auto">
-            Discover our exclusive range of luxury perfumes designed to elevate your presence and create lasting impressions.
-          </p>
-        </div>
-      </div>
-      
-      {/* Products Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex flex-col lg:flex-row gap-10">
-          {/* Filters Sidebar */}
-          <div className="w-full lg:w-1/4">
+    <div className="container mx-auto px-4">
+      <div className="py-8">
+        <h1 className="text-2xl md:text-3xl font-light text-center text-primary mb-8">
+          Our Collection
+        </h1>
+        
+        {/* Product Filtering and Sorting Controls */}
+        <div className="flex flex-col md:flex-row justify-between mb-8">
+          <div className="w-full md:w-1/4">
             <div className="sticky top-24">
               <h3 className="text-xl font-light text-primary mb-6">Filters</h3>
               
@@ -249,16 +241,28 @@ export default function ProductsPage() {
             
             {/* Products */}
             {loading ? (
-              <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+              <div className="h-96 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
               </div>
             ) : filteredProducts.length === 0 ? (
-              <div className="text-center py-12">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-primary/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M19.071 19.071c3.904-3.905 3.904-10.237 0-14.142-3.905-3.904-10.237-3.904-14.142 0-3.904 3.905-3.904 10.237 0 14.142 3.905 3.904 10.237 3.904 14.142 0zM8 15l4-4m0 0l4-4m-4 4l-4-4m4 4l4 4" />
+              <div className="bg-background-secondary rounded-lg p-8 text-center">
+                <svg className="w-16 h-16 text-primary/30 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                 </svg>
-                <h3 className="mt-4 text-xl text-textColor-muted">No products found</h3>
-                <p className="mt-2 text-textColor-muted/70">Try adjusting your filters</p>
+                <h3 className="text-lg font-medium mb-2">No products found</h3>
+                <p className="text-textColor-muted mb-4">
+                  We couldn't find any products matching your current filters.
+                </p>
+                <button 
+                  onClick={() => setFilters({
+                    category: '',
+                    priceRange: 'all',
+                    sortBy: 'featured'
+                  })}
+                  className="btn-outline-primary py-2 px-4"
+                >
+                  Clear All Filters
+                </button>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -270,7 +274,26 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
-      
+    </div>
+  );
+}
+
+// Main Products page component
+export default function ProductsPage() {
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main className="py-10 md:py-16">
+        <Suspense fallback={
+          <div className="container mx-auto px-4">
+            <div className="h-96 flex items-center justify-center">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+            </div>
+          </div>
+        }>
+          <ProductsContent />
+        </Suspense>
+      </main>
       <Footer />
     </div>
   );

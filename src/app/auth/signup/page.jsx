@@ -1,281 +1,130 @@
 "use client"
-import { useState } from 'react';
+import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
+// Temporarily providing a simple placeholder component
 export default function SignupPage() {
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    agreeTerms: false
-  });
-  
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
-    
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: null
-      });
-    }
-  };
-  
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-    
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
-    }
-    
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    }
-    
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-    
-    if (!formData.agreeTerms) {
-      newErrors.agreeTerms = 'You must agree to the terms and conditions';
-    }
-    
-    return newErrors;
-  };
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    const newErrors = validateForm();
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-    
-    setLoading(true);
-    
-    try {
-      // This would be your API call to register a user
-      // For demo purposes, we'll just simulate a successful registration
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Store user data in localStorage (in a real app, this would use cookies/session)
-      localStorage.setItem('user', JSON.stringify({
-        id: 'user_' + Date.now(),
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        isLoggedIn: true
-      }));
-      
-      router.push('/auth/signin?registered=true');
-    } catch (error) {
-      setErrors({
-        form: 'Registration failed. Please try again.'
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-  
   return (
-    <div className="min-h-screen bg-background text-textColor-secondary font-primary">
+    <div className="min-h-screen bg-background">
       <Navbar />
       
-      <main className="py-12 md:py-16 lg:py-20">
-        <div className="container mx-auto px-4 max-w-md">
-          <div className="mb-10 text-center">
-            <h1 className="text-3xl font-light text-primary mb-4">Create Account</h1>
-            <p className="text-textColor-muted">Join NOZE to enjoy exclusive benefits and offers</p>
+      <main className="py-20 md:py-32">
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-md mx-auto bg-background-secondary rounded-lg shadow-sm border border-primary/10 p-8">
+            <h1 className="text-2xl md:text-3xl font-light text-primary mb-4">Sign Up</h1>
+            <p className="text-textColor-muted mb-6">This feature is coming soon.</p>
+            <Link href="/" className="btn-primary inline-block px-6 py-3">
+              Return to Home
+            </Link>
           </div>
-          
-          {errors.form && (
-            <div className="bg-red-500/10 border border-red-500/30 text-red-500 px-4 py-3 rounded mb-6">
-              {errors.form}
+        </div>
+      </main>
+      
+      <Footer />
+    </div>
+  );
+}
+
+/* Original code commented out
+// Import the SignUpForm component without directly using it
+import SignUpFormComponent from '@/components/auth/SignUpForm';
+
+// Loading fallback component
+function SignUpFormLoading() {
+  return (
+    <div className="bg-background-secondary rounded-lg shadow-sm border border-primary/10 p-6 md:p-8">
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="h-10 bg-primary/10 rounded animate-pulse"></div>
+          <div className="h-10 bg-primary/10 rounded animate-pulse"></div>
+        </div>
+        <div className="h-10 bg-primary/10 rounded animate-pulse"></div>
+        <div className="h-10 bg-primary/10 rounded animate-pulse"></div>
+        <div className="h-10 bg-primary/10 rounded animate-pulse"></div>
+        <div className="h-5 w-32 bg-primary/10 rounded animate-pulse"></div>
+        <div className="h-12 bg-primary/10 rounded animate-pulse"></div>
+      </div>
+    </div>
+  );
+}
+
+// SignUpForm wrapper with Suspense boundary
+function SignUpForm() {
+  return (
+    <Suspense fallback={<SignUpFormLoading />}>
+      <SignUpFormComponent />
+    </Suspense>
+  );
+}
+
+export default function SignupPage() {
+  const router = useRouter();
+  
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      
+      <main className="py-10 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-lg mx-auto">
+            <div className="text-center mb-8">
+              <h1 className="text-2xl md:text-3xl font-light text-primary">Create Your Account</h1>
+              <p className="text-textColor-muted mt-2">Join NOZE and discover your perfect fragrance</p>
             </div>
-          )}
-          
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-normal mb-2">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  className={`input-primary w-full ${errors.firstName ? 'border-red-500' : ''}`}
-                  placeholder="John"
-                />
-                {errors.firstName && (
-                  <p className="mt-1 text-sm text-red-500">{errors.firstName}</p>
-                )}
+            
+            <div className="bg-background-secondary rounded-lg shadow-sm border border-primary/10 p-6 md:p-8">
+              <SignUpForm />
+              
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-background-secondary text-textColor-muted">Or sign up with</span>
+                </div>
               </div>
               
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-normal mb-2">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  className={`input-primary w-full ${errors.lastName ? 'border-red-500' : ''}`}
-                  placeholder="Doe"
-                />
-                {errors.lastName && (
-                  <p className="mt-1 text-sm text-red-500">{errors.lastName}</p>
-                )}
-              </div>
-            </div>
-            
-            <div>
-              <label htmlFor="email" className="block text-sm font-normal mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className={`input-primary w-full ${errors.email ? 'border-red-500' : ''}`}
-                placeholder="johndoe@example.com"
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email}</p>
-              )}
-            </div>
-            
-            <div>
-              <label htmlFor="password" className="block text-sm font-normal mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className={`input-primary w-full pr-10 ${errors.password ? 'border-red-500' : ''}`}
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-textColor-muted hover:text-primary focus:outline-none"
-                >
-                  {showPassword ? (
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
-                    </svg>
-                  ) : (
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                    </svg>
-                  )}
+              <div className="grid grid-cols-2 gap-4">
+                <button className="btn-outline-primary py-2.5 flex items-center justify-center">
+                  <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
+                    <path
+                      fill="#4285F4"
+                      d="M12 5c1.617 0 3.077.543 4.243 1.461l2.984-2.585C17.309 2.002 14.869 1 12 1 7.693 1 4.008 3.115 2 6.35l3.425 2.654A7.43 7.43 0 0112 5z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    />
+                  </svg>
+                  Google
+                </button>
+                <button className="btn-outline-primary py-2.5 flex items-center justify-center">
+                  <svg className="h-5 w-5 mr-2" fill="#1877F2" viewBox="0 0 24 24">
+                    <path
+                      d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                    />
+                  </svg>
+                  Facebook
                 </button>
               </div>
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-500">{errors.password}</p>
-              )}
-              <p className="mt-2 text-xs text-textColor-muted">
-                Password must be at least 8 characters long
-              </p>
             </div>
             
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-normal mb-2">
-                Confirm Password
-              </label>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                className={`input-primary w-full ${errors.confirmPassword ? 'border-red-500' : ''}`}
-                placeholder="••••••••"
-              />
-              {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
-              )}
-            </div>
-            
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input
-                  id="agreeTerms"
-                  name="agreeTerms"
-                  type="checkbox"
-                  checked={formData.agreeTerms}
-                  onChange={handleInputChange}
-                  className="h-4 w-4 border border-primary/30 rounded accent-primary focus:ring-primary"
-                />
-              </div>
-              <div className="ml-3 text-sm">
-                <label htmlFor="agreeTerms" className={`font-light ${errors.agreeTerms ? 'text-red-500' : 'text-textColor-muted'}`}>
-                  I agree to the <Link href="/terms" className="text-primary hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>
-                </label>
-              </div>
-            </div>
-            
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full btn-primary flex justify-center items-center py-3"
-              >
-                {loading ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Creating Account...
-                  </>
-                ) : (
-                  'Create Account'
-                )}
-              </button>
-            </div>
-          </form>
-          
-          <div className="mt-8 text-center">
-            <p className="text-textColor-muted">
+            <p className="mt-6 text-center text-sm text-textColor-muted">
               Already have an account?{' '}
-              <Link href="/auth/signin" className="text-primary hover:underline">
-                Sign In
+              <Link href="/auth/signin" className="text-primary hover:text-primary/80 font-medium">
+                Sign in
               </Link>
             </p>
           </div>
@@ -285,4 +134,5 @@ export default function SignupPage() {
       <Footer />
     </div>
   );
-} 
+}
+*/ 
