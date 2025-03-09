@@ -4,6 +4,7 @@ import { CartProvider } from '@/context/CartContext';
 import { WishlistProvider } from '@/context/WishlistContext';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import { Providers } from '@/redux/provider';
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -20,13 +21,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${montserrat.variable} font-primary bg-background text-textColor-primary`}>
-        <WishlistProvider>
-          <CartProvider>
-          <Navbar/>
-            {children}
-            <Footer />
-          </CartProvider>
-        </WishlistProvider>
+        <Providers>
+          <WishlistProvider>
+            <CartProvider>
+              <Navbar />
+              {children}
+              <Footer />
+            </CartProvider>
+          </WishlistProvider>
+        </Providers>
       </body>
     </html>
   );
