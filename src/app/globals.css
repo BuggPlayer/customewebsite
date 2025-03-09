@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #d2a34b;
+  --primary-color-dark: #c69544;
+  --primary-color-light: #e6c98f;
+  --bg-color: #000000;
+  --secondary-bg-color: #121212;
+  --text-color: #d2a34b;
+  --text-color-secondary: #ffffff;
+  --text-color-muted: rgba(255, 255, 255, 0.8);
+  --border-color: #d2a34b;
+  --border-color-faded: rgba(210, 163, 75, 0.3);
+}
+
+@layer base {
+  body {
+    @apply bg-background font-primary text-textColor-secondary;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-light tracking-wider;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .section-title {
+    @apply text-3xl md:text-5xl font-light tracking-wider text-primary mb-4 inline-block relative;
+  }
+  
+  .section-title-bar {
+    @apply absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-24 h-[1px] bg-primary opacity-50;
+  }
+  
+  .section-description {
+    @apply text-textColor-muted max-w-2xl mx-auto mt-6 text-sm md:text-base;
+  }
+  
+  .btn-primary {
+    @apply px-8 py-4 bg-primary text-black font-light uppercase tracking-wider hover:bg-primary-dark transition-colors duration-300;
+  }
+  
+  .btn-outline {
+    @apply px-8 py-4 border border-primary text-primary font-light uppercase tracking-wider hover:bg-primary hover:text-black transition-all duration-300;
+  }
+  
+  .testimonial-card {
+    @apply border border-primary/20 p-8 hover:border-primary/50 transition-colors duration-300;
+  }
+  
+  .gold-divider {
+    @apply h-[1px] w-full bg-primary/30 my-16;
+  }
+  
+  .input-primary {
+    @apply px-6 py-4 bg-transparent border border-primary/50 text-textColor-secondary placeholder-textColor-secondary/50 focus:outline-none focus:border-primary;
+  }
+}
