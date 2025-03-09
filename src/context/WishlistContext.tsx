@@ -2,9 +2,14 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 
+interface Product {
+  id: string;
+  // Add other product properties you need
+}
+
 interface WishlistContextType {
-  wishlist: any[];
-  addToWishlist: (product: any) => void;
+  wishlist: Product[];
+  addToWishlist: (product: Product) => void;
   removeFromWishlist: (productId: string) => void;
   isInWishlist: (productId: string) => boolean;
 }
@@ -12,22 +17,30 @@ interface WishlistContextType {
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
-  const [wishlist, setWishlist] = useState<any[]>([]);
+  const [wishlist, setWishlist] = useState<Product[]>([]);
 
   // Load wishlist from localStorage on mount
   useEffect(() => {
-    const savedWishlist = localStorage.getItem('wishlist');
-    if (savedWishlist) {
-      setWishlist(JSON.parse(savedWishlist));
+    try {
+      const savedWishlist = localStorage.getItem('wishlist');
+      if (savedWishlist) {
+        setWishlist(JSON.parse(savedWishlist));
+      }
+    } catch (error) {
+      console.error('Error loading wishlist:', error);
     }
   }, []);
 
   // Save wishlist to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    try {
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    } catch (error) {
+      console.error('Error saving wishlist:', error);
+    }
   }, [wishlist]);
 
-  const addToWishlist = (product: any) => {
+  const addToWishlist = (product: Product) => {
     setWishlist((prev) => {
       if (!prev.find((item) => item.id === product.id)) {
         return [...prev, product];
