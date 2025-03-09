@@ -38,10 +38,11 @@ const ProductCard = ({ product }) => {
       <Link href={`/products/${id}`} className="block aspect-square overflow-hidden">
         <div className="relative w-full h-full transform transition-transform duration-500 group-hover:scale-105">
           <Image 
-            src={images[0] || '/assets/frontend_assets/products/placeholder.jpg'} 
+            src={'/assets/frontend_assets/products/placeholdr.svg'}
             alt={name}
             fill
-            unoptimized={images[0]?.startsWith('http')}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
             className="object-cover"
           />
           

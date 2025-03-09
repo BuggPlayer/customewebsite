@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'res.cloudinary.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -12,4 +12,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig; 
+module.exports = nextConfig;
