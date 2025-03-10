@@ -1,4 +1,5 @@
-
+'use client'
+import { useEffect } from "react";
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 import BrandStory from '@/components/home/BrandStory';
 import Testimonials from '@/components/home/Testimonials';
@@ -6,6 +7,9 @@ import NewsletterSignup from '@/components/home/NewsletterSignup';
 import Image from 'next/image';
 import Link from 'next/link';
 import Hero from '@/components/home/Hero';
+import { get_banners, get_products } from "../redux/features/homeSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 // Mock collections data
 const collections = [
   {
@@ -29,6 +33,16 @@ const collections = [
 ];
 
 export default function Home() {
+  const dispatch = useDispatch();
+  const { products, banners, latest_product, topRated_product, discount_product, loading, error } = useSelector(state => state.home);
+  useEffect(() => {
+    dispatch(get_banners());
+    dispatch(get_products());
+  }, [dispatch]);
+
+
+  
+console.log("prrrr",products, banners, latest_product, topRated_product, discount_product, loading, error )
   return (
     <div className="min-h-screen bg-background text-textColor-secondary">
     
@@ -44,7 +58,7 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-light text-center text-primary mb-12">
               Our Signature Collection
             </h2>
-            <FeaturedProducts />
+            <FeaturedProducts products={products} />
           </div>
         </section>
 

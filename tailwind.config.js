@@ -4,6 +4,15 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      'xs': '300px',  // Custom extra small breakpoint (very small devices)
+      'sm': '450px',  // Small mobile devices (portrait)
+      'md': '768px',  // Tablets and small laptops
+      'lg': '1024px', // Desktops and larger tablets in landscape
+      'xl': '1280px', // Large desktops and screens
+      '2xl': '1536px', // Extra large screens (large desktops, TVs, etc.)
+      '2xl': '1536px',
+    },
     extend: {
       colors: {
         primary: {
