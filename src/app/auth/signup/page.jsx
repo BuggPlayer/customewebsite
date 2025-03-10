@@ -3,14 +3,11 @@ import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 
 // Temporarily providing a simple placeholder component
 export default function SignupPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       
       <main className="py-20 md:py-32">
         <div className="container mx-auto px-4 text-center">
@@ -24,7 +21,6 @@ export default function SignupPage() {
         </div>
       </main>
       
-      <Footer />
     </div>
   );
 }

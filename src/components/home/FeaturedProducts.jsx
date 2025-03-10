@@ -53,8 +53,9 @@ const featuredProducts = [
 ];
 
 export default function FeaturedProducts() {
+  console.log("tttttttttttttt")
   const { addToCart } = useCart();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
     // Simulate loading data

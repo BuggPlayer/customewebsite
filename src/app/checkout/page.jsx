@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -153,7 +152,6 @@ export default function CheckoutPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
         <main className="py-10 md:py-16">
           <div className="container mx-auto px-4">
             <div className="flex justify-center items-center h-64">
@@ -164,7 +162,6 @@ export default function CheckoutPage() {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -172,7 +169,6 @@ export default function CheckoutPage() {
   if (orderPlaced) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
         <main className="py-10 md:py-16">
           <div className="container mx-auto px-4 max-w-3xl">
             <div className="bg-background-secondary border border-primary/5 rounded-lg p-8 text-center">
@@ -214,14 +210,12 @@ export default function CheckoutPage() {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
   
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <main className="py-10 md:py-16">
         <div className="container mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-light text-primary mb-6">Checkout</h1>
@@ -616,7 +610,6 @@ export default function CheckoutPage() {
           </form>
         </div>
       </main>
-      <Footer />
     </div>
   );
 } 

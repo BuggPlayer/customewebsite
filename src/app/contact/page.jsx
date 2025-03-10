@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -90,7 +89,7 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="relative h-[40vh] min-h-[300px] flex items-center justify-center">
         <Image
-          src="/assets/frontend_assets/contact/hero.jpg"
+          src="/assets/frontend_assets/backgrounds/hero1.jpg"
           alt="Contact Us"
           fill
           className="object-cover"
@@ -298,7 +297,6 @@ export default function ContactPage() {
         </div>
       </section>
       
-      <Footer />
     </div>
   );
 } 

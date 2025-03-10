@@ -1,13 +1,10 @@
 "use client"
 import Image from 'next/image';
 import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center">
@@ -142,7 +139,6 @@ export default function AboutPage() {
         </div>
       </section>
       
-      <Footer />
     </div>
   );
 } 

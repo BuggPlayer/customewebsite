@@ -2,7 +2,6 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/products/ProductCard';
 import { fetchProducts } from '@/utils/productService';
 
@@ -294,7 +293,6 @@ export default function ProductsPage() {
           <ProductsContent />
         </Suspense>
       </main>
-      <Footer />
     </div>
   );
 } 

@@ -90,7 +90,8 @@ export default function Navbar() {
     { label: 'Home', href: '/' },
     { label: 'Shop', href: '/products' },
     { label: 'About', href: '/about' },
-    { label: 'Contact', href: '/contact' }
+    { label: 'Contact', href: '/contact' },
+    { label: 'My Profile', href: '/account/profile' }
   ];
   
   return (

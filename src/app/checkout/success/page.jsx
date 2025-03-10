@@ -4,8 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 
 export default function OrderSuccessPage() {
   const router = useRouter();
@@ -26,7 +24,6 @@ export default function OrderSuccessPage() {
   
   return (
     <div className="min-h-screen bg-background text-textColor-secondary font-primary">
-      <Navbar />
       
       <main className="py-16 md:py-24">
         <div className="container mx-auto px-4 max-w-4xl">
@@ -141,7 +138,6 @@ export default function OrderSuccessPage() {
         </div>
       </div>
       
-      <Footer />
     </div>
   );
 } 

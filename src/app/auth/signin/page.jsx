@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 
 export default function SigninPage() {
   const router = useRouter();
@@ -101,7 +99,7 @@ export default function SigninPage() {
   
   return (
     <div className="min-h-screen bg-background text-textColor-secondary font-primary">
-      <Navbar />
+    
       
       <main className="py-12 md:py-16 lg:py-20">
         <div className="container mx-auto px-4 max-w-md">
@@ -228,7 +226,6 @@ export default function SigninPage() {
         </div>
       </main>
       
-      <Footer />
     </div>
   );
 } 

@@ -6,7 +6,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { Transition } from '@headlessui/react';
 import { useCart } from '@/context/CartContext';
 import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import RelatedProducts from '@/components/products/RelatedProducts';
 import { getProductById } from '@/utils/productService';
 
@@ -612,7 +611,6 @@ export default function ProductDetailPage() {
         </div>
       </main>
       
-      <Footer />
       
       {/* Custom Styles */}
       <style jsx global>{`

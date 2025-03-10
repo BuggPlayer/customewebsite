@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import AccountSidebar from '@/components/account/AccountSidebar';
 
 // Mock orders data (in a real app, this would come from API)
@@ -237,7 +235,6 @@ export default function OrderDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background text-textColor-secondary font-primary">
-        <Navbar />
         <main className="py-12 md:py-16">
           <div className="container mx-auto px-4">
             <div className="flex justify-center items-center py-20">
@@ -245,7 +242,6 @@ export default function OrderDetailPage() {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -253,7 +249,6 @@ export default function OrderDetailPage() {
   if (!order) {
     return (
       <div className="min-h-screen bg-background text-textColor-secondary font-primary">
-        <Navbar />
         <main className="py-12 md:py-16">
           <div className="container mx-auto px-4 text-center py-20">
             <h2 className="text-2xl font-light text-primary mb-4">Order Not Found</h2>
@@ -263,7 +258,6 @@ export default function OrderDetailPage() {
             </Link>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -273,7 +267,6 @@ export default function OrderDetailPage() {
   
   return (
     <div className="min-h-screen bg-background text-textColor-secondary font-primary">
-      <Navbar />
       
       <main className="py-12 md:py-16">
         <div className="container mx-auto px-4">
@@ -456,9 +449,7 @@ export default function OrderDetailPage() {
           </div>
         </div>
       </main>
-      
-      <Footer />
-      
+            
       {/* Custom Styles */}
       <style jsx global>{`
         .hide-scrollbar::-webkit-scrollbar {

@@ -4,8 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 
 export default function CartPage() {
   const router = useRouter();
@@ -101,7 +99,6 @@ export default function CartPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
         <main className="py-10 md:py-16">
           <div className="container mx-auto px-4">
             <div className="flex justify-center items-center h-64">
@@ -112,7 +109,6 @@ export default function CartPage() {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -121,7 +117,6 @@ export default function CartPage() {
   if (cart.length === 0) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar />
         <main className="py-10 md:py-16">
           <div className="container mx-auto px-4">
             <h1 className="text-2xl md:text-3xl font-light text-primary mb-8">Shopping Cart</h1>
@@ -140,14 +135,12 @@ export default function CartPage() {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
   
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
       <main className="py-10 md:py-16">
         <div className="container mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-light text-primary mb-8">Shopping Cart</h1>
@@ -357,7 +350,6 @@ export default function CartPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 } 
