@@ -60,7 +60,7 @@ const MiniCart = () => {
                         <li key={`${item.id}-${item.size?.id || 'default'}`} className="py-6 flex">
                           <div className="relative flex-shrink-0 w-24 h-24 overflow-hidden border border-primary/20">
                             <Image 
-                              src={item.image}
+                              src={item.images[0]}
                               alt={item.name}
                               fill
                               className="object-cover"

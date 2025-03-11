@@ -70,7 +70,6 @@ export default function ProductDetailPage() {
   
   // Handle adding to cart
   const handleAddToCart = () => {
-    console.log("cart")
     if (!product) return;
     
     setAddingToCart(true);

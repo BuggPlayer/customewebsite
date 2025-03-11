@@ -13,7 +13,7 @@ export function CartProvider({ children }) {
   // Initialize cart from localStorage on mount
   useEffect(() => {
     try {
-      const storedCart = localStorage.getItem('cart');
+      const storedCart = localStorage.getItem('nozeCart');
       if (storedCart) {
         const parsedCart = JSON.parse(storedCart);
         setCart(parsedCart);
@@ -22,14 +22,14 @@ export function CartProvider({ children }) {
       console.error('Error loading cart from localStorage:', error);
       // Reset cart if there's an error
       setCart([]);
-      localStorage.removeItem('cart');
+      localStorage.removeItem('nozeCart');
     }
   }, []);
   
   // Update localStorage and totals whenever cart changes
   useEffect(() => {
     try {
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem('nozeCart', JSON.stringify(cart));
       
       // Calculate totals
       const count = cart.reduce((total, item) => total + item.quantity, 0);
