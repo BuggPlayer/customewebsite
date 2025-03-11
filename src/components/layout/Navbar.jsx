@@ -289,14 +289,20 @@ export default function Navbar() {
                           <Link
                             href="/cart"
                             className="btn-outline-primary py-2 text-center text-sm"
-                            onClick={() => setIsCartOpen(false)}
+                            onClick={() => {router.push('/cart');
+                              setIsCartOpen(false);
+                              
+                            }}
                           >
-                            View Cart
+                            View Cart 
                           </Link>
                           <Link
                             href="/checkout"
                             className="btn-primary py-2 text-center text-sm"
-                            onClick={() => setIsCartOpen(false)}
+                            onClick={() => {
+                              setIsCartOpen(false);
+                              router.push('/checkout');
+                            }}
                           >
                             Checkout
                           </Link>
@@ -382,7 +388,7 @@ export default function Navbar() {
                   <div key={`${item.id}-${item.size}`} className="flex items-center p-4 border-b border-primary/5">
                     <div className="w-14 h-14 relative rounded-md overflow-hidden bg-background-primary shrink-0">
                       <Image
-                        src={item.image || '/assets/frontend_assets/products/placeholder.jpg'}
+                        src={'/assets/frontend_assets/products/placeholder.jpg'}
                         alt={item.name}
                         fill
                         className="object-cover"
@@ -416,13 +422,15 @@ export default function Navbar() {
                 
                 <div className="grid grid-cols-2 gap-2">
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent event bubbling
+                      console.log("hwlooo")
                       setIsCartOpen(false);
                       router.push('/cart');
                     }}
                     className="btn-outline-primary py-2 text-center text-sm"
                   >
-                    View Cart
+                    View Cart 33
                   </button>
                   <button
                     onClick={() => {
@@ -451,7 +459,7 @@ export default function Navbar() {
                 className={`block px-4 py-3 hover:bg-primary/5 transition-colors ${
                   pathname === link.href ? 'text-primary' : 'text-textColor-secondary'
                 }`}
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() =>{ setIsMenuOpen(false) , router.push(`/${link.label}`)}}
               >
                 {link.label}
               </Link>
