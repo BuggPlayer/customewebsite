@@ -374,7 +374,7 @@ export default function CheckoutPage() {
                   <h2 className="text-lg font-medium mb-4">Payment Method</h2>
                   
                   <div className="space-y-3">
-                    <div className="flex items-center">
+                    {/* <div className="flex items-center">
                       <input
                         id="creditCard"
                         name="paymentMethod"
@@ -392,9 +392,9 @@ export default function CheckoutPage() {
                           <Image src="/assets/frontend_assets/payment/amex.svg" alt="American Express" width={32} height={20} />
                         </div>
                       </label>
-                    </div>
+                    </div> */}
                     
-                    <div className="flex items-center">
+                    {/* <div className="flex items-center">
                       <input
                         id="upi"
                         name="paymentMethod"
@@ -412,7 +412,7 @@ export default function CheckoutPage() {
                           <Image src="/assets/frontend_assets/payment/paytm.svg" alt="Paytm" width={32} height={20} />
                         </div>
                       </label>
-                    </div>
+                    </div> */}
                     
                     <div className="flex items-center">
                       <input
@@ -488,7 +488,7 @@ export default function CheckoutPage() {
                   )}
                   
                   {/* UPI Fields */}
-                  {formData.paymentMethod === 'upi' && (
+                  {/* {formData.paymentMethod === 'upi' && (
                     <div className="mt-4 pt-4 border-t border-primary/10">
                       <div>
                         <label htmlFor="upiId" className="block text-sm font-medium mb-1">
@@ -505,7 +505,7 @@ export default function CheckoutPage() {
                         </p>
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
               

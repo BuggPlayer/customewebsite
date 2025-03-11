@@ -64,6 +64,13 @@
     @apply px-6 py-4 bg-transparent border border-primary/50 text-textColor-secondary placeholder-textColor-secondary/50 focus:outline-none focus:border-primary;
   }
 }
+.btn-primary {
+  @apply bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors;
+}
+
+.input-primary {
+  @apply px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none;
+}
 
 /* globals.css */
 /* @media (max-width: 300px) {

@@ -70,6 +70,7 @@ export default function ProductDetailPage() {
   
   // Handle adding to cart
   const handleAddToCart = () => {
+    console.log("cart")
     if (!product) return;
     
     setAddingToCart(true);
@@ -378,7 +379,7 @@ export default function ProductDetailPage() {
               </div>
               
               {/* Add to Cart Button */}
-              <div className="mb-8">
+              < div className="mb-8">
                 <button
                   onClick={handleAddToCart}
                   disabled={addingToCart || stock <= 0}

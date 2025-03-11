@@ -5,6 +5,7 @@ import { WishlistProvider } from '@/context/WishlistContext';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Providers } from '@/redux/provider';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${montserrat.variable} font-primary bg-background text-textColor-primary`}>
+      <GoogleOAuthProvider  clientId="347410691860-i1gudm0eg5hcq1visjsianmabh5d4otc.apps.googleusercontent.com">
         <Providers>
           <WishlistProvider>
             <CartProvider>
@@ -30,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </CartProvider>
           </WishlistProvider>
         </Providers>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

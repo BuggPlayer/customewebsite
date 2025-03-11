@@ -19,8 +19,7 @@ export const add_to_card = createAsyncThunk(
       );
       return fulfillWithValue(data);
     } catch (error) {
-      console.log(error.response);
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || { error: "An error occurred" });
     }
   }
 );
@@ -41,7 +40,7 @@ export const get_card_products = createAsyncThunk(
       );
       return fulfillWithValue(data);
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || { error: "An error occurred" });
     }
   }
 );
@@ -60,9 +59,9 @@ export const delete_card_product = createAsyncThunk(
         `${base_URL}/api/home/product/delete-card-product/${card_id}`,
         config
       );
-      return fulfillWithValue(data);
+      return fulfillWithValue({ ...data, card_id });
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || { error: "An error occurred" });
     }
   }
 );
@@ -78,12 +77,13 @@ export const quantity_inc = createAsyncThunk(
     };
     try {
       const { data } = await axios.put(
-        `/home/product/quantity-inc/${card_id}`,
+        `${base_URL}/api/home/product/quantity-inc/${card_id}`,
+        {},
         config
       );
-      return fulfillWithValue(data);
+      return fulfillWithValue({ ...data, card_id });
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || { error: "An error occurred" });
     }
   }
 );
@@ -100,76 +100,12 @@ export const quantity_dec = createAsyncThunk(
     try {
       const { data } = await axios.put(
         `${base_URL}/api/home/product/quantity-dec/${card_id}`,
+        {},
         config
       );
-      return fulfillWithValue(data);
+      return fulfillWithValue({ ...data, card_id });
     } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const add_to_wishlist = createAsyncThunk(
-  "wishlist/add_to_wishlist",
-  async (info, { rejectWithValue, fulfillWithValue, getState }) => {
-    const { token } = getState().auth;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const { data } = await axios.post(
-        `${base_URL}/api/home/product/add-to-wishlist`,
-        info,
-        config
-      );
-      console.log(data);
-      return fulfillWithValue(data);
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const get_wishlist_products = createAsyncThunk(
-  "wishlist/get_wishlist_products",
-  async (userId, { rejectWithValue, fulfillWithValue, getState }) => {
-    const { token } = getState().auth;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const { data } = await axios.get(
-        `${base_URL}/api/home/product/get-wishlist-products/${userId}`,
-        config
-      );
-      return fulfillWithValue(data);
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const remove_wishlist = createAsyncThunk(
-  "wishlist/remove_wishlist",
-  async (wishlistId, { rejectWithValue, fulfillWithValue, getState }) => {
-    const { token } = getState().auth;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const { data } = await axios.delete(
-        `${base_URL}/api/home/product/delete-wishlist-product/${wishlistId}`,
-        config
-      );
-      return fulfillWithValue(data);
-    } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || { error: "An error occurred" });
     }
   }
 );
@@ -198,50 +134,48 @@ export const cardReducer = createSlice({
       state.wishlist_count = 0;
     },
   },
-  extraReducers: {
-    [add_to_card.rejected]: (state, { payload }) => {
-      state.errorMessage = payload.error;
-    },
-    [add_to_card.fulfilled]: (state, { payload }) => {
-      state.successMessage = payload.message;
-      state.card_product_count = state.card_product_count + 1;
-    },
-    [get_card_products.fulfilled]: (state, { payload }) => {
-      state.card_products = payload.card_products;
-      state.price = payload.price;
-      state.card_product_count = payload.card_product_count;
-      state.shipping_fee = payload.shipping_fee;
-      state.outofstock_products = payload.outOfStockProduct;
-      state.buy_product_item = payload.buy_product_item;
-    },
-    [delete_card_product.fulfilled]: (state, { payload }) => {
-      state.successMessage = payload.message;
-    },
-    [quantity_inc.fulfilled]: (state, { payload }) => {
-      state.successMessage = payload.message;
-    },
-    [quantity_dec.fulfilled]: (state, { payload }) => {
-      state.successMessage = payload.message;
-    },
-    [add_to_wishlist.rejected]: (state, { payload }) => {
-      state.errorMessage = payload.error;
-    },
-    [add_to_wishlist.fulfilled]: (state, { payload }) => {
-      state.successMessage = payload.message;
-      state.wishlist_count =
-        state.wishlist_count > 0 ? state.wishlist_count + 1 : 1;
-    },
-    [get_wishlist_products.fulfilled]: (state, { payload }) => {
-      state.wishlist = payload.wishlists;
-      state.wishlist_count = payload.wishlistCount;
-    },
-    [remove_wishlist.fulfilled]: (state, { payload }) => {
-      state.successMessage = payload.message;
-      state.wishlist = state.wishlist.filter(
-        (p) => p._id !== payload.wishlistId
-      );
-      state.wishlist_count = state.wishlist_count - 1;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(add_to_card.rejected, (state, { payload }) => {
+        state.errorMessage = payload.error;
+      })
+      .addCase(add_to_card.fulfilled, (state, { payload }) => {
+        state.successMessage = payload.message;
+        state.card_product_count += 1;
+      })
+      .addCase(get_card_products.fulfilled, (state, { payload }) => {
+        state.card_products = payload.card_products;
+        state.price = payload.price;
+        state.card_product_count = payload.card_product_count;
+        state.shipping_fee = payload.shipping_fee;
+        state.outofstock_products = payload.outOfStockProduct;
+        state.buy_product_item = payload.buy_product_item;
+      })
+      .addCase(delete_card_product.fulfilled, (state, { payload }) => {
+        state.successMessage = payload.message;
+        state.card_products = state.card_products.filter(
+          (product) => product._id !== payload.card_id
+        );
+        state.card_product_count -= 1;
+      })
+      .addCase(quantity_inc.fulfilled, (state, { payload }) => {
+        state.successMessage = payload.message;
+        const product = state.card_products.find(
+          (p) => p._id === payload.card_id
+        );
+        if (product) {
+          product.quantity += 1;
+        }
+      })
+      .addCase(quantity_dec.fulfilled, (state, { payload }) => {
+        state.successMessage = payload.message;
+        const product = state.card_products.find(
+          (p) => p._id === payload.card_id
+        );
+        if (product && product.quantity > 1) {
+          product.quantity -= 1;
+        }
+      });
   },
 });
 
