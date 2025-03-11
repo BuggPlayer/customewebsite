@@ -5,7 +5,7 @@ module.exports = {
   ],
   theme: {
     screens: {
-      'xs': '300px',  // Custom extra small breakpoint (very small devices)
+      'xs': '340px',  // Custom extra small breakpoint (very small devices)
       'sm': '450px',  // Small mobile devices (portrait)
       'md': '768px',  // Tablets and small laptops
       'lg': '1024px', // Desktops and larger tablets in landscape

@@ -27,7 +27,7 @@ export default function FeaturedProducts({ products }) {
   };
 
   return (
-    <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2  md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-4 gap-4 p-4">
+    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2  md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-4 gap-4 p-4">
       {isLoading ? (
         // Loading skeletons
         Array(4).fill().map((_, i) => (
@@ -121,7 +121,7 @@ export default function FeaturedProducts({ products }) {
                 href={`/products/${product.id}`}
                 className="group block flex-grow"
               >
-                <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-primary transition-colors line-clamp-2">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1 text-primary  line-clamp-2">
                   {product.name}
                 </h3>
                 <p className="text-sm text-gray-500 line-clamp-3 mb-4">
@@ -129,7 +129,7 @@ export default function FeaturedProducts({ products }) {
                 </p>
               </Link>
 
-              <button
+              {/* <button
                 onClick={() => handleAddToCart(product)}
                 className="mt-auto w-full bg-primary hover:bg-primary-dark text-white py-3 px-4 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center"
               >
@@ -147,11 +147,13 @@ export default function FeaturedProducts({ products }) {
                   />
                 </svg>
                 Add to Cart
-              </button>
+              </button> */}
             </div>
           </div>
         ))
       )}
+
+      
     </div>
   );
 }
