@@ -121,9 +121,10 @@ export default function FeaturedProducts({ products }) {
                 href={`/products/${product.id}`}
                 className="group block flex-grow"
               >
-                <h3 className="text-lg font-semibold text-gray-900 mb-1 text-primary  line-clamp-2">
-                  {product.name}
-                </h3>
+               <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-gray-900 mb-1 text-primary line-clamp-2">
+  {product.name}
+</h3>
+
                 <p className="text-sm text-gray-500 line-clamp-3 mb-4">
                   {product.description}
                 </p>
