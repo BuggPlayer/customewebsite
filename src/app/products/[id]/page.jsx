@@ -83,10 +83,16 @@ export default function ProductDetailPage() {
     
     addToCart({
       ...product,
+      productId: product.id,
+       name: product.name,
+       price: product.price,
+       image: product.images[0],
+       sellerId: product.sellerId,
       size: selectedSize,
       quantity,
       price: sizeAdjustedPrice
     });
+
     
     setTimeout(() => {
       setAddingToCart(false);
@@ -395,7 +401,7 @@ export default function ProductDetailPage() {
                   ) : stock <= 0 ? (
                     'Out of Stock'
                   ) : (
-                    'Add to Cart'
+                    'Add to Carttt'
                   )}
                 </button>
               </div>

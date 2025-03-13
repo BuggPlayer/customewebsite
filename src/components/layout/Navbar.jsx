@@ -249,12 +249,12 @@ export default function Navbar() {
                     </div>
                   ) : (
                     <>
-                      <div className="max-h-60 overflow-y-auto">
+                   <div className="max-h-60 overflow-y-auto">
                         {cart.map((item) => (
                           <div key={`${item.id}-${item.size}`} className="flex items-center p-4 border-b border-primary/5">
                             <div className="w-14 h-14 relative rounded-md overflow-hidden bg-background-primary shrink-0">
                               <Image
-                                src={'/assets/frontend_assets/products/placeholdr.svg'}
+                                src={item.images[0] || '/assets/frontend_assets/products/placeholdr.svg'}
                                 alt={item.name}
                                 fill
                                 className="object-cover"
@@ -390,7 +390,7 @@ export default function Navbar() {
                   <div key={`${item.id}-${item.size}`} className="flex items-center p-4 border-b border-primary/5">
                     <div className="w-14 h-14 relative rounded-md overflow-hidden bg-background-primary shrink-0">
                       <Image
-                        src={'/assets/frontend_assets/products/placeholder.jpg'}
+                      src={item.images[0] || '/assets/frontend_assets/products/placeholdr.svg'}
                         alt={item.name}
                         fill
                         className="object-cover"

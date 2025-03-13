@@ -18,11 +18,12 @@ export default function FeaturedProducts({ products }) {
   }, []);
 
   const handleAddToCart = (product) => {
+    console.log('prodd' , product)
     addToCart({
       productId: product._id,
       name: product.name,
       price: product.price,
-      image: product.images[0],
+      images: product.images,
       sellerId: product.sellerId,
       quantity: product.qty,
     }, 1, '50ml');
