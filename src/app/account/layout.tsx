@@ -6,12 +6,12 @@ export default function AccountLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="container py-12">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div className="container py-8">
+      <div className="">
         <div className="md:col-span-1">
           {/* <AccountSidebar /> */}
         </div>
-        <div className="md:col-span-3">
+        <div className="md:col-span-1">
           {children}
         </div>
       </div>

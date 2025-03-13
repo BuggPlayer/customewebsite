@@ -76,6 +76,7 @@ export const orderReducer = createSlice({
     isLoading: false,
     errorMessage: "",
     successMessage: "",
+    message:""
   },
   reducers: {
     messageClear: (state) => {
@@ -90,7 +91,8 @@ export const orderReducer = createSlice({
         state.isLoading = true;
         state.errorMessage = "";
       })
-      .addCase(place_order.fulfilled, (state) => {
+      .addCase(place_order.fulfilled, (state, { payload }) => {
+        console.log("state" ,payload)
         state.isLoading = false;
         state.successMessage = "Order placed successfully";
       })

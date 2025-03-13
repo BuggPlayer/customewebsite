@@ -4,9 +4,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
-import Navbar from '@/components/layout/Navbar';
+import { useSelector, useDispatch } from "react-redux";
+import { place_order } from '@/redux/features/orderSlice';
+// import useWindowScrollToTop from '@/hooks/useWindowScrollToTop';
+import { toast } from "react-toastify";
 
 export default function CheckoutPage() {
+  const { isLoading, errorMessage, successMessage } = useSelector((state) => state.order);
+  const userInfo = JSON.parse(localStorage.getItem("user-info"));
+  const dispatch = useDispatch();
   const router = useRouter();
   const { cart, clearCart } = useCart();
   const [loading, setLoading] = useState(true);
@@ -19,7 +25,7 @@ export default function CheckoutPage() {
     city: '',
     state: '',
     postalCode: '',
-    paymentMethod: 'creditCard'
+    paymentMethod: 'COD'
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,14 +45,14 @@ export default function CheckoutPage() {
     }, 500);
     
     // Attempt to pre-fill with user data if available
-    const user = localStorage.getItem('user');
+    const user = localStorage.getItem('user-info');
     if (user) {
       try {
         const userData = JSON.parse(user);
         setFormData(prev => ({
           ...prev,
           email: userData.email || '',
-          firstName: userData.firstName || '',
+          firstName: userData.name || '',
           lastName: userData.lastName || ''
         }));
       } catch (error) {
@@ -130,10 +136,30 @@ export default function CheckoutPage() {
     }
     
     setIsSubmitting(true);
-    
+    // useWindowScrollToTop();
     try {
+
+      const orderDetails = {
+        price: total,
+        products: cart.map((item) => ({
+          productId: item.productId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image,
+          sellerId: item.sellerId,
+        })),
+        shipping_fee: shipping,
+        sellerId: cart[0]?.sellerId,
+        shippingInfo: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.postalCode}, ${formData.country}`,
+        userId: userInfo?._id,
+        userName: formData?.fullName,
+        paymentMethod: formData?.paymentMethod,
+      };
+     
+      dispatch(place_order(orderDetails));
       // Simulate API request
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Generate a random order ID
       const generatedOrderId = 'ORD' + Math.floor(100000 + Math.random() * 900000);
@@ -148,7 +174,17 @@ export default function CheckoutPage() {
       setIsSubmitting(false);
     }
   };
-  
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      // setShowConfirmationModal(true);
+      // setTimeout(() => dispatch(messageClear()), 3000);
+    }
+    if (errorMessage) {
+      toast.error(errorMessage);
+      // setTimeout(() => dispatch(messageClear()), 3000);
+    }
+  }, [successMessage, errorMessage, dispatch]);
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -186,7 +222,7 @@ export default function CheckoutPage() {
               </p>
               
               <div className="bg-primary/5 rounded-lg p-4 mb-6">
-                <p className="text-textColor-secondary font-medium">Order ID: <span className="text-primary">{orderId}</span></p>
+                <p className="text-textColor-secondary font-medium">Order ID: <span className="text-primary">12345678</span></p>
                 <p className="text-textColor-muted mt-1">Please save this order ID for tracking your order.</p>
               </div>
               
@@ -213,7 +249,6 @@ export default function CheckoutPage() {
       </div>
     );
   }
-  
   return (
     <div className="min-h-screen bg-background">
       <main className="py-10 md:py-16">

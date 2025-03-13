@@ -9,7 +9,7 @@ export const get_products = createAsyncThunk(
   async (_, { fulfillWithValue, rejectWithValue }) => {
     try {
       const { data } = await axios.get(`${base_URL}/api/home/get-products`);
-      console.log("data" , data)
+      // console.log("data" , data)
       return fulfillWithValue(data);
     } catch (error) {
       console.log(error.response);

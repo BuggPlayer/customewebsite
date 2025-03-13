@@ -42,7 +42,7 @@ export default function Home() {
 
 
   
-console.log("prrrr",products, banners, latest_product, topRated_product, discount_product, loading, error )
+// console.log("prrrr",products, banners, latest_product, topRated_product, discount_product, loading, error )
   return (
     <div className="min-h-screen bg-background text-textColor-secondary">
     

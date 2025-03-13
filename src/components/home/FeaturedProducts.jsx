@@ -19,10 +19,12 @@ export default function FeaturedProducts({ products }) {
 
   const handleAddToCart = (product) => {
     addToCart({
-      id: product.id,
+      productId: product._id,
       name: product.name,
       price: product.price,
-      image: product.image,
+      image: product.images[0],
+      sellerId: product.sellerId,
+      quantity: product.qty,
     }, 1, '50ml');
   };
 

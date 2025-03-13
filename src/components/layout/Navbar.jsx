@@ -23,9 +23,10 @@ export default function Navbar() {
   useEffect(() => {
     const checkAuth = () => {
       try {
-        const storedUser = localStorage.getItem('user');
+        const storedUser = localStorage.getItem('user-info');
         if (storedUser) {
-          setUser(JSON.parse("storedUser"));
+          setUser(null);
+
         } else {
           setUser(null);
         }
