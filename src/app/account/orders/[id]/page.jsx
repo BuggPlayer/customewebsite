@@ -6,6 +6,8 @@ import { useRouter, useParams } from 'next/navigation';
 import AccountSidebar from '@/components/account/AccountSidebar';
 // In your OrderDetailPage component
 import DownloadInvoiceButton from '../../../../components/invioce/DownloadInvoiceButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { get_order } from '@/redux/features/orderSlice';
 
 // Mock orders data (in a real app, this would come from API)
 const mockOrders = [
@@ -137,9 +139,11 @@ const mockOrders = [
 ];
 
 export default function OrderDetailPage() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const params = useParams();
   const { id } = params;
+  const { myOrder } = useSelector(state => state.order);
   
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -151,23 +155,20 @@ export default function OrderDetailPage() {
         router.push('/auth/signin');
         return;
       }
-      
+      dispatch(get_order(id));
       // For demo purposes, find the order in our mock data
-      const foundOrder = mockOrders.find(order => order.id === id);
+      // const foundOrder = mockOrders.find(order => order.id === id);
    
-      if (foundOrder) {
-        setOrder(foundOrder);
-      } else {
-        // Order not found, redirect to orders list
+      if (!myOrder) {
         router.push('/account/orders');
       }
-      
       setLoading(false);
     };
     
     checkAuth();
   }, [id, router]);
-  
+
+
   // Format date function
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
@@ -248,7 +249,7 @@ export default function OrderDetailPage() {
     );
   }
   
-  if (!order) {
+  if (!myOrder) {
     return (
       <div className="min-h-screen bg-background text-textColor-secondary font-primary">
         <main className="py-12 md:py-16">
@@ -264,9 +265,13 @@ export default function OrderDetailPage() {
     );
   }
   
-  const statusBadge = getStatusBadge(order.status);
-  const timelineSteps = getOrderTimeline(order.status);
-  
+  const statusBadge = getStatusBadge(myOrder.
+    delivery_status
+    );
+  const timelineSteps = getOrderTimeline(myOrder.
+    delivery_status
+    );
+  console.log("myOrder--", myOrder)
   return (
     <div className="min-h-screen bg-background text-textColor-secondary font-primary">
     <main className="py-8 md:py-12 lg:py-16">
@@ -291,13 +296,13 @@ export default function OrderDetailPage() {
                       <span className="text-sm font-medium">Back to Orders</span>
                     </Link>
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                      <h1 className="text-2xl lg:text-3xl font-light text-primary">Order #{order.id}</h1>
+                      <h1 className="text-2xl lg:text-3xl font-light text-primary">Order #{myOrder._id}</h1>
                       <span className={`px-4 py-2 rounded-full text-sm ${statusBadge.bg} ${statusBadge.text} border ${statusBadge.border}`}>
                         {statusBadge.label}
                       </span>
                     </div>
                     <p className="text-textColor-muted mt-2">
-                      Placed on {formatDate(order.date)}
+                      Placed on {formatDate(myOrder.createdAt)}
                     </p>
                   </div>
                 </div>
@@ -345,10 +350,10 @@ export default function OrderDetailPage() {
                 {/* Order Items */}
                 <div className="lg:col-span-2 space-y-6">
                   <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
-                    <h3 className="text-lg font-medium text-primary mb-6">Order Items ({order.items.length})</h3>
+                    <h3 className="text-lg font-medium text-primary mb-6">Order Items ({myOrder?.products?.length})</h3>
                     
                     <div className="space-y-6">
-                      {order.items.map((item, index) => (
+                      {myOrder?.products?.map((item, index) => (
                         <div key={index} className="flex items-start gap-5">
                           <div className="w-24 h-24 relative rounded-lg overflow-hidden bg-gray-100 shrink-0">
                             <Image
@@ -386,14 +391,14 @@ export default function OrderDetailPage() {
                     <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
                       <h3 className="text-lg font-medium text-primary mb-4">Shipping Address</h3>
                       <div className="text-textColor-muted space-y-1.5">
-                        {formatAddress(order.shippingAddress)}
+                        {formatAddress(myOrder?.shippingAddress)}
                       </div>
                     </div>
                     
                     <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
                       <h3 className="text-lg font-medium text-primary mb-4">Billing Address</h3>
                       <div className="text-textColor-muted space-y-1.5">
-                        {formatAddress(order.billingAddress)}
+                        {formatAddress(myOrder?.billingAddress)}
                       </div>
                     </div>
                   </div>
@@ -406,36 +411,36 @@ export default function OrderDetailPage() {
                   <div className="space-y-4">
                     <div className="flex justify-between">
                       <span className="text-textColor-muted">Subtotal</span>
-                      <span className="font-medium">₹{order.subtotal.toFixed(2)}</span>
+                      <span className="font-medium">₹{myOrder?.subtotal?.toFixed(2)}</span>
                     </div>
                     
                     <div className="flex justify-between">
                       <span className="text-textColor-muted">Shipping</span>
                       <span className="font-medium">
-                        {order.shipping === 0 ? 'Free' : `₹${order.shipping.toFixed(2)}`}
+                        {myOrder.shipping === 0 ? 'Free' : `₹${myOrder?.shipping?.toFixed(2)}`}
                       </span>
                     </div>
                     
                     <div className="flex justify-between">
                       <span className="text-textColor-muted">Tax</span>
-                      <span className="font-medium">₹{order.tax.toFixed(2)}</span>
+                      <span className="font-medium">₹{myOrder?.tax?.toFixed(2)}</span>
                     </div>
                     
                     <div className="border-t border-gray-200 pt-4 flex justify-between font-medium text-lg">
                       <span>Total</span>
-                      <span className="text-primary">₹{order.total.toFixed(2)}</span>
+                      <span className="text-primary">₹{myOrder?.total?.toFixed(2)}</span>
                     </div>
                   </div>
                   
                   <div className="mt-6 pt-6 border-t border-gray-200">
                     <h4 className="text-base font-medium mb-3">Payment Method</h4>
-                    <p className="text-textColor-muted">{order.paymentMethod}</p>
+                    <p className="text-textColor-muted">{myOrder?.paymentMethod}</p>
                     
-                    {order.trackingNumber && (
+                    {myOrder?.trackingNumber && (
                       <div className="mt-6 pt-6 border-t border-gray-200">
                         <h4 className="text-base font-medium mb-3">Tracking Details</h4>
                         <p className="text-textColor-muted mb-1">Tracking Number:</p>
-                        <p className="font-mono text-primary break-all">{order.trackingNumber}</p>
+                        <p className="font-mono text-primary break-all">{myOrder?.trackingNumber}</p>
                       </div>
                     )}
                   </div>
@@ -444,14 +449,14 @@ export default function OrderDetailPage() {
                     {/* <button className="w-full btn-outline-primary py-3.5 text-sm font-medium rounded-lg hover:shadow-sm transition-all">
                       Download Invoice
                     </button> */}
-                    <DownloadInvoiceButton order={order} />
-                    {order.status === 'delivered' && (
+                    <DownloadInvoiceButton order={myOrder} />
+                    {myOrder?.status === 'delivered' && (
                       <button className="w-full btn-primary py-3.5 text-sm font-medium rounded-lg hover:shadow-lg transition-all">
                         Write a Review
                       </button>
                     )}
                     
-                    {(order.status === 'processing' || order.status === 'shipped') && (
+                    {(order?.status === 'processing' || order?.status === 'shipped') && (
                       <button className="w-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white py-3.5 text-sm font-medium rounded-lg transition-colors">
                         Cancel Order
                       </button>

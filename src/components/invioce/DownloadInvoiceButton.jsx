@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 const DownloadInvoiceButton = ({ order }) => {
+  console.log("order" ,order)
   const invoiceRef = useRef(null);
   const [showPreview, setShowPreview] = useState(false);
 
@@ -80,7 +81,7 @@ const DownloadInvoiceButton = ({ order }) => {
                   </div>
                   <div className="text-left sm:text-right">
                     <h1 className="text-xl sm:text-3xl font-bold text-textColor-primary">INVOICE</h1>
-                    <p className="text-textColor-muted text-sm sm:text-base mt-1 sm:mt-2">Order #: {order.id}</p>
+                    <p className="text-textColor-muted text-sm sm:text-base mt-1 sm:mt-2">Order #: {order._id}</p>
                   </div>
                 </div>
               </div>
@@ -89,10 +90,10 @@ const DownloadInvoiceButton = ({ order }) => {
               <div className="mb-6 sm:mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                 <div className="bg-primary-light/10 p-3 sm:p-4 rounded-lg">
                   <h3 className="text-base sm:text-lg font-semibold text-primary-DEFAULT mb-1 sm:mb-2">Billing Details</h3>
-                  <p className="text-textColor-secondary text-sm sm:text-base">{order.billingAddress.name}</p>
-                  <p className="text-textColor-secondary text-sm sm:text-base">{order.billingAddress.address}</p>
-                  <p className="text-textColor-secondary text-sm sm:text-base">{order.billingAddress.city}, {order.billingAddress.state}</p>
-                  <p className="text-textColor-secondary text-sm sm:text-base">{order.billingAddress.postalCode}</p>
+                  <p className="text-textColor-secondary text-sm sm:text-base">{order?.billingAddress?.name}</p>
+                  <p className="text-textColor-secondary text-sm sm:text-base">{order?.billingAddress?.address}</p>
+                  <p className="text-textColor-secondary text-sm sm:text-base">{order?.billingAddress?.city}, {order?.billingAddress?.state}</p>
+                  <p className="text-textColor-secondary text-sm sm:text-base">{order?.billingAddress?.postalCode}</p>
                 </div>
                 <div className="bg-primary-light/10 p-3 sm:p-4 rounded-lg">
                   <h3 className="text-base sm:text-lg font-semibold text-primary-DEFAULT mb-1 sm:mb-2">Shipping Details</h3>
@@ -112,7 +113,7 @@ const DownloadInvoiceButton = ({ order }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {order.items.map((item, index) => (
+                    {order.products.map((item, index) => (
                       <tr key={index} className="border-b border-primary-DEFAULT/20 even:bg-background-secondary">
                         <td className="py-2 sm:py-3 px-3 sm:px-4 text-textColor-secondary text-sm sm:text-base">{item.name} ({item.size})</td>
                         <td className="py-2 sm:py-3 px-3 sm:px-4 text-textColor-secondary text-sm sm:text-base">₹{item.price.toFixed(2)}</td>
@@ -129,12 +130,12 @@ const DownloadInvoiceButton = ({ order }) => {
                 <div className="bg-primary-light/10 p-4 sm:p-6 rounded-lg">
                   <div className="flex justify-between mb-2 sm:mb-3">
                     <span className="text-textColor-secondary text-sm sm:text-base">Subtotal:</span>
-                    <span className="text-textColor-secondary text-sm sm:text-base">₹{order.subtotal.toFixed(2)}</span>
+                    <span className="text-textColor-secondary text-sm sm:text-base">₹{order?.subtotal?.toFixed(2)}</span>
                   </div>
                   {/* Other total rows */}
                   <div className="flex justify-between pt-3 sm:pt-4 border-t border-primary-DEFAULT">
                     <span className="text-base sm:text-lg font-bold text-primary-DEFAULT">Total:</span>
-                    <span className="text-base sm:text-lg font-bold text-primary-DEFAULT">₹{order.total.toFixed(2)}</span>
+                    <span className="text-base sm:text-lg font-bold text-primary-DEFAULT">₹{order?.total?.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -142,7 +143,7 @@ const DownloadInvoiceButton = ({ order }) => {
               {/* Footer */}
               <div className="mt-8 sm:mt-16 pt-4 sm:pt-8 border-t border-primary-DEFAULT/20 text-center text-sm text-textColor-muted">
                 <p className="text-xs sm:text-sm">Thank you for your business!</p>
-                <p className="mt-1 sm:mt-2 text-xs sm:text-sm">Fragrance Haven • contact@fragrancehaven.com • +91 98765 43210</p>
+                <p className="mt-1 sm:mt-2 text-xs sm:text-sm">Noze perfum• contact@fragrancehaven.com • +91 98765 43210</p>
               </div>
             </div>
 
