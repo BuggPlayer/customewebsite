@@ -92,7 +92,7 @@ export default function Navbar() {
     { label: 'Shop', href: '/products' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
-    { label: 'My Profile', href: '/account/profile' }
+    { label: 'My Dashboard', href: '/account/orders' }
   ];
   
   return (
@@ -320,7 +320,8 @@ export default function Navbar() {
           <div className="flex items-center space-x-4 md:hidden">
             {/* Cart Icon */}
             <button 
-              onClick={() => setIsCartOpen(!isCartOpen)}
+              // onClick={() => setIsCartOpen(!isCartOpen)}
+                onClick={() => router.push('/cart')}
               className="text-textColor-secondary relative"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -424,7 +425,7 @@ export default function Navbar() {
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent event bubbling
+                      // e.stopPropagation(); // Prevent event bubbling
                       console.log("hwlooo")
                       setIsCartOpen(false);
                       router.push('/cart');

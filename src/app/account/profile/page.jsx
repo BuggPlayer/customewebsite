@@ -25,7 +25,7 @@ export default function ProfilePage() {
   // Load user data on page load
   useEffect(() => {
     const checkAuth = () => {
-      const storedUser = localStorage.getItem('user');
+      const storedUser = localStorage.getItem('user-info');
       if (!storedUser) {
         router.push('/auth/signin');
         return;
