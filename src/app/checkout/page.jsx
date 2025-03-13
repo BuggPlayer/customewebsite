@@ -11,7 +11,18 @@ import { toast } from "react-toastify";
 
 export default function CheckoutPage() {
   const { isLoading, errorMessage, successMessage } = useSelector((state) => state.order);
-  const userInfo = JSON.parse(localStorage.getItem("user-info"));
+  // const userInfo = JSON.parse(localStorage.getItem("user-info"));
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // This ensures the code only runs on the client side
+      const storedUserInfo = localStorage.getItem("user-info");
+      if (storedUserInfo) {
+        setUserInfo(JSON.parse(storedUserInfo));
+      }
+    }
+  }, []);
   const dispatch = useDispatch();
   const router = useRouter();
   const { cart, clearCart } = useCart();
