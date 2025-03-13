@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import AccountSidebar from '@/components/account/AccountSidebar';
+import { useDispatch, useSelector } from 'react-redux';
+import { get_orders } from '@/redux/features/orderSlice';
 
 // Mock orders data (in a real app, this would come from API)
 const mockOrders = [
@@ -67,10 +69,12 @@ const mockOrders = [
 
 export default function OrdersPage() {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { myOrders } = useSelector(state => state.order);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
-  
+  console.log("ii",myOrders)
   // Filter options
   const filters = [
     { id: 'all', label: 'All Orders' },
@@ -81,21 +85,33 @@ export default function OrdersPage() {
   ];
   
   useEffect(() => {
+    // const userInfo = JSON.parse(localStorage.getItem("user-info"));
+
+    const storedUser = JSON.parse(localStorage.getItem("user-info"));
     const checkAuth = () => {
-      const storedUser = localStorage.getItem('user-info');
+   
+    
+    
       if (!storedUser) {
         router.push('/auth/signin');
         return;
       }
-      
+     
       // For demo purposes, we'll use mock data
       // In a real app, you would fetch orders from an API
       setOrders(mockOrders);
       setLoading(false);
     };
+    console.log("orderinfo",storedUser._id)
+    dispatch(get_orders({ status: activeFilter, customerId: storedUser._id }));
+      
     
     checkAuth();
-  }, [router]);
+  }, [router,activeFilter]);
+//   useEffect(() => {
+   
+// }, [activeFilter]);
+
   
   // Filter orders based on status
   const filteredOrders = activeFilter === 'all'
@@ -195,7 +211,7 @@ export default function OrdersPage() {
               </div>
               
               {/* Orders List */}
-              {filteredOrders.length === 0 ? (
+              {myOrders.length === 0 ? (
                 <div className="text-center py-12 lg:py-16">
                   <svg className="w-20 h-20 mx-auto text-primary/20 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
@@ -212,42 +228,44 @@ export default function OrdersPage() {
                 </div>
               ) : (
                 <div className="space-y-5 sm:space-y-6">
-                  {filteredOrders.map(order => {
-                    const statusBadge = getStatusBadge(order.status);
+                  {myOrders.map(order => {
+                    const statusBadge = getStatusBadge(order.
+                      delivery_status);
                     
                     return (
-                      <div key={order.id} className="border bg-primary-light/10 border-primary/10 rounded-xl overflow-hidden shadow-xs hover:shadow-sm transition-shadow duration-200">
+                      <div key={order._id} className="border bg-primary-light/10 border-primary/10 rounded-xl overflow-hidden shadow-xs hover:shadow-sm transition-shadow duration-200">
                         {/* Order Header */}
                         <div className="bg-background-primary p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-5">
                           <div className="flex-1">
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                              <h3 className="text-lg sm:text-xl font-light text-primary">Order #{order.id}</h3>
+                              <h3 className="text-lg sm:text-xl font-light text-primary">Order #{order._id}</h3>
                               <span className={`px-3 py-1.5 rounded-full text-sm ${statusBadge.bg} ${statusBadge.text} border ${statusBadge.border}`}>
                                 {statusBadge.label}
                               </span>
                             </div>
                             <p className="text-sm text-textColor-muted mt-1.5">
-                              Placed on {formatDate(order.date)}
+                              Placed on {formatDate(order.createdAt)}
                             </p>
                           </div>
                           
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
                             <span className="text-base sm:text-lg text-textColor-muted">
-                              Total: <span className="text-primary font-medium">₹{order.total.toFixed(2)}</span>
+                              Total: <span className="text-primary font-medium">₹{order.price.toFixed(2)}</span>
                             </span>
-                            <Link 
-                              href={`/account/orders/${order.id}`}
-                              className="btn-outline-primary px-5 py-2.5 text-sm w-full sm:w-auto text-center rounded-lg"
+                           <Link
+                              href={`/account/orders/${order._id}`}
+                              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                             >
                               View Details
                             </Link>
+
                           </div>
                         </div>
-                        
+                       
                         {/* Order Items */}
                         <div className="p-4 sm:p-5 ">
                           <div className="space-y-4 sm:space-y-5">
-                            {order.items.map((item, index) => (
+                            {order.products?.map((item, index) => (
                               <div key={index} className="flex items-start gap-4 sm:gap-5">
                                 <div className="w-20 h-20 sm:w-24 sm:h-24 relative rounded-lg overflow-hidden bg-background-primary shrink-0">
                                   <Image

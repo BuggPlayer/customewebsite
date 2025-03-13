@@ -167,6 +167,7 @@ export default function CheckoutPage() {
         userName: formData?.fullName,
         paymentMethod: formData?.paymentMethod,
       };
+      console.log("details" , orderDetails)
      
       dispatch(place_order(orderDetails));
       // Simulate API request
@@ -568,7 +569,7 @@ export default function CheckoutPage() {
                       >
                         <div className="relative w-16 h-16 rounded overflow-hidden flex-shrink-0">
                           <Image
-                            src={item.image || '/assets/frontend_assets/products/placeholder.jpg'}
+                            src={item.images[0] || '/assets/frontend_assets/products/placeholder.jpg'}
                             alt={item.name}
                             fill
                             className="object-cover"
@@ -576,8 +577,12 @@ export default function CheckoutPage() {
                         </div>
                         
                         <div className="ml-3 flex-grow">
-                          <h3 className="text-sm font-medium">{item.name}</h3>
-                          <p className="text-xs text-textColor-muted">
+                        <h3 
+      className="text-sm font-medium truncate max-w-[160px] xs:max-w-[200px] sm:max-w-[260px] md:max-w-[300px]"
+      title={item.name} // Add title attribute for native tooltip
+    >
+      {item.name}
+    </h3>                          <p className="text-xs text-textColor-muted">
                             {item.size && `Size: ${item.size}`}
                             <span className="mx-1">•</span>
                             Qty: {item.quantity}
