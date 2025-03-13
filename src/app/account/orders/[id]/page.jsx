@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import AccountSidebar from '@/components/account/AccountSidebar';
+// In your OrderDetailPage component
+import DownloadInvoiceButton from '../../../../components/invioce/DownloadInvoiceButton';
 
 // Mock orders data (in a real app, this would come from API)
 const mockOrders = [
@@ -152,7 +154,7 @@ export default function OrderDetailPage() {
       
       // For demo purposes, find the order in our mock data
       const foundOrder = mockOrders.find(order => order.id === id);
-      
+   
       if (foundOrder) {
         setOrder(foundOrder);
       } else {
@@ -267,199 +269,201 @@ export default function OrderDetailPage() {
   
   return (
     <div className="min-h-screen bg-background text-textColor-secondary font-primary">
-      
-      <main className="py-12 md:py-16">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-8">
-            {/* Sidebar */}
-            <div className="w-full md:w-64 flex-shrink-0">
-              <AccountSidebar activePage="orders" />
-            </div>
-            
-            {/* Main Content */}
-            <div className="flex-1">
-              <div className="bg-background-secondary p-6 md:p-8 rounded-lg">
-                {/* Order Header */}
-                <div className="mb-8">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                    <div>
-                      <Link href="/account/orders" className="text-primary flex items-center hover:underline mb-2">
-                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                        Back to Orders
-                      </Link>
-                      <h1 className="text-2xl font-light text-primary">Order #{order.id}</h1>
-                      <p className="text-textColor-muted mt-1">
-                        Placed on {formatDate(order.date)}
-                      </p>
+    <main className="py-8 md:py-12 lg:py-16">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex flex-col md:flex-row gap-6 lg:gap-8">
+          {/* Sidebar */}
+          <div className="w-full md:w-64 lg:w-72 shrink-0">
+            <AccountSidebar activePage="orders" />
+          </div>
+          
+          {/* Main Content */}
+          <div className="flex-1">
+            <div className="bg-background-secondary p-5 sm:p-7 lg:p-9 rounded-xl shadow-sm">
+              {/* Order Header */}
+              <div className="mb-8">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                  <div>
+                    <Link href="/account/orders" className="text-primary flex items-center hover:underline mb-2 transition-colors duration-200">
+                      <svg className="w-5 h-5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                      </svg>
+                      <span className="text-sm font-medium">Back to Orders</span>
+                    </Link>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                      <h1 className="text-2xl lg:text-3xl font-light text-primary">Order #{order.id}</h1>
+                      <span className={`px-4 py-2 rounded-full text-sm ${statusBadge.bg} ${statusBadge.text} border ${statusBadge.border}`}>
+                        {statusBadge.label}
+                      </span>
                     </div>
-                    
-                    <span className={`px-4 py-2 rounded-full text-sm ${statusBadge.bg} ${statusBadge.text} border ${statusBadge.border}`}>
-                      {statusBadge.label}
-                    </span>
+                    <p className="text-textColor-muted mt-2">
+                      Placed on {formatDate(order.date)}
+                    </p>
                   </div>
+                </div>
+                
+                {/* Order Timeline */}
+                <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs mb-8">
+                  <h3 className="text-lg font-medium text-primary mb-6">Order Status Timeline</h3>
                   
-                  {/* Order Timeline */}
-                  <div className="bg-background p-6 rounded-lg mb-8">
-                    <h3 className="text-lg font-light text-primary mb-6">Order Status</h3>
-                    
-                    <div className="flex flex-col sm:flex-row items-start justify-between">
+                  <div className="relative">
+                    <div className="hidden sm:block absolute top-7 left-20 right-20 h-[2px] bg-gray-200"></div>
+                    <div className="grid sm:grid-cols-4 gap-6">
                       {timelineSteps.map((step, index) => (
-                        <div key={step.id} className="flex flex-1 items-center mb-4 sm:mb-0">
-                          <div className="flex flex-col items-center">
-                            <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center mb-2 ${step.completed ? 'border-primary bg-primary/10 text-primary' : 'border-gray-300 bg-gray-50 text-gray-300'}`}>
+                        <div key={step.id} className="flex items-center sm:block">
+                          <div className="flex sm:flex-col items-center gap-4">
+                            <div className={`w-12 h-12 rounded-xl border-2 flex items-center justify-center shrink-0 ${
+                              step.completed 
+                                ? 'border-primary bg-primary/10 text-primary' 
+                                : 'border-gray-300 bg-gray-50 text-gray-400'
+                            }`}>
                               {step.completed ? (
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                                 </svg>
                               ) : (
-                                index + 1
+                                <span className="font-medium">{index + 1}</span>
                               )}
                             </div>
-                            <div className="text-center">
-                              <p className={`font-medium ${step.completed ? 'text-primary' : 'text-textColor-muted'}`}>{step.label}</p>
-                              {step.date && <p className="text-xs text-textColor-muted mt-1">{step.date}</p>}
+                            <div className="sm:text-center sm:mt-3">
+                              <p className={`font-medium ${step.completed ? 'text-primary' : 'text-textColor-muted'}`}>
+                                {step.label}
+                              </p>
+                              {step.date && (
+                                <p className="text-sm text-textColor-muted mt-1.5">{step.date}</p>
+                              )}
                             </div>
                           </div>
-                          
-                          {index < timelineSteps.length - 1 && (
-                            <div className={`hidden sm:block h-[1px] flex-1 mx-2 ${step.completed ? 'bg-primary' : 'bg-gray-300'}`}></div>
-                          )}
                         </div>
                       ))}
                     </div>
                   </div>
                 </div>
-                
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  {/* Order Items */}
-                  <div className="lg:col-span-2">
-                    <div className="bg-background p-6 rounded-lg mb-8">
-                      <h3 className="text-lg font-light text-primary mb-6">Items ({order.items.length})</h3>
-                      
-                      <div className="space-y-6">
-                        {order.items.map((item, index) => (
-                          <div key={index} className="flex items-start gap-4">
-                            <div className="w-20 h-20 relative rounded-md overflow-hidden bg-background-primary shrink-0">
-                              <Image
-                                src={item.image || '/assets/frontend_assets/products/placeholder.jpg'}
-                                alt={item.name}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                            
-                            <div className="flex-1 min-w-0">
-                              <Link href={`/products/${item.id}`} className="text-base hover:text-primary truncate block">
-                                {item.name}
-                              </Link>
-                              <div className="flex gap-4 text-sm text-textColor-muted mt-1">
-                                <span>Size: {item.size}</span>
-                                <span>Qty: {item.quantity}</span>
-                              </div>
-                            </div>
-                            
-                            <div className="text-right">
-                              <span className="font-medium">₹{item.price.toFixed(2)}</span>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Order Items */}
+                <div className="lg:col-span-2 space-y-6">
+                  <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
+                    <h3 className="text-lg font-medium text-primary mb-6">Order Items ({order.items.length})</h3>
+                    
+                    <div className="space-y-6">
+                      {order.items.map((item, index) => (
+                        <div key={index} className="flex items-start gap-5">
+                          <div className="w-24 h-24 relative rounded-lg overflow-hidden bg-gray-100 shrink-0">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 640px) 96px, 128px"
+                            />
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <Link 
+                              href={`/products/${item.id}`}
+                              className="text-lg font-medium hover:text-primary transition-colors truncate block"
+                            >
+                              {item.name}
+                            </Link>
+                            <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-textColor-muted">
+                              <span className="bg-gray-100 px-3 py-1 rounded-md">Size: {item.size}</span>
+                              <span>Quantity: {item.quantity}</span>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Shipping and Billing */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                      <div className="bg-background p-6 rounded-lg">
-                        <h3 className="text-lg font-light text-primary mb-4">Shipping Address</h3>
-                        <div className="text-textColor-muted">
-                          {formatAddress(order.shippingAddress)}
+                          
+                          <div className="text-right">
+                            <span className="font-medium text-lg">₹{item.price.toFixed(2)}</span>
+                          </div>
                         </div>
-                      </div>
-                      
-                      <div className="bg-background p-6 rounded-lg">
-                        <h3 className="text-lg font-light text-primary mb-4">Billing Address</h3>
-                        <div className="text-textColor-muted">
-                          {formatAddress(order.billingAddress)}
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                   
-                  {/* Order Summary */}
-                  <div className="bg-background p-6 rounded-lg h-fit">
-                    <h3 className="text-lg font-light text-primary mb-6">Order Summary</h3>
-                    
-                    <div className="space-y-4">
-                      <div className="flex justify-between">
-                        <span className="text-textColor-muted">Subtotal</span>
-                        <span>₹{order.subtotal.toFixed(2)}</span>
-                      </div>
-                      
-                      <div className="flex justify-between">
-                        <span className="text-textColor-muted">Shipping</span>
-                        <span>{order.shipping === 0 ? 'Free' : `₹${order.shipping.toFixed(2)}`}</span>
-                      </div>
-                      
-                      <div className="flex justify-between">
-                        <span className="text-textColor-muted">Tax</span>
-                        <span>₹{order.tax.toFixed(2)}</span>
-                      </div>
-                      
-                      <div className="border-t border-primary/10 pt-4 flex justify-between font-medium">
-                        <span>Total</span>
-                        <span className="text-primary">₹{order.total.toFixed(2)}</span>
+                  {/* Address Section */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
+                      <h3 className="text-lg font-medium text-primary mb-4">Shipping Address</h3>
+                      <div className="text-textColor-muted space-y-1.5">
+                        {formatAddress(order.shippingAddress)}
                       </div>
                     </div>
                     
-                    <div className="mt-6 pt-6 border-t border-primary/10">
-                      <h4 className="text-base font-medium mb-3">Payment Information</h4>
-                      <p className="text-textColor-muted mb-2">{order.paymentMethod}</p>
-                      
-                      {order.trackingNumber && (
-                        <div className="mt-4 pt-4 border-t border-primary/10">
-                          <h4 className="text-base font-medium mb-3">Tracking Information</h4>
-                          <p className="text-textColor-muted mb-1">Tracking Number:</p>
-                          <p className="text-primary font-mono">{order.trackingNumber}</p>
-                        </div>
-                      )}
+                    <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
+                      <h3 className="text-lg font-medium text-primary mb-4">Billing Address</h3>
+                      <div className="text-textColor-muted space-y-1.5">
+                        {formatAddress(order.billingAddress)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Order Summary */}
+                <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs h-fit sticky top-6">
+                  <h3 className="text-lg font-medium text-primary mb-6">Order Summary</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="flex justify-between">
+                      <span className="text-textColor-muted">Subtotal</span>
+                      <span className="font-medium">₹{order.subtotal.toFixed(2)}</span>
                     </div>
                     
-                    <div className="mt-8">
-                      <button className="w-full btn-outline-primary py-3">
-                        Download Invoice
+                    <div className="flex justify-between">
+                      <span className="text-textColor-muted">Shipping</span>
+                      <span className="font-medium">
+                        {order.shipping === 0 ? 'Free' : `₹${order.shipping.toFixed(2)}`}
+                      </span>
+                    </div>
+                    
+                    <div className="flex justify-between">
+                      <span className="text-textColor-muted">Tax</span>
+                      <span className="font-medium">₹{order.tax.toFixed(2)}</span>
+                    </div>
+                    
+                    <div className="border-t border-gray-200 pt-4 flex justify-between font-medium text-lg">
+                      <span>Total</span>
+                      <span className="text-primary">₹{order.total.toFixed(2)}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <h4 className="text-base font-medium mb-3">Payment Method</h4>
+                    <p className="text-textColor-muted">{order.paymentMethod}</p>
+                    
+                    {order.trackingNumber && (
+                      <div className="mt-6 pt-6 border-t border-gray-200">
+                        <h4 className="text-base font-medium mb-3">Tracking Details</h4>
+                        <p className="text-textColor-muted mb-1">Tracking Number:</p>
+                        <p className="font-mono text-primary break-all">{order.trackingNumber}</p>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="mt-6 space-y-4">
+                    {/* <button className="w-full btn-outline-primary py-3.5 text-sm font-medium rounded-lg hover:shadow-sm transition-all">
+                      Download Invoice
+                    </button> */}
+                    <DownloadInvoiceButton order={order} />
+                    {order.status === 'delivered' && (
+                      <button className="w-full btn-primary py-3.5 text-sm font-medium rounded-lg hover:shadow-lg transition-all">
+                        Write a Review
                       </button>
-                      
-                      {order.status === 'delivered' && (
-                        <button className="w-full btn-primary py-3 mt-3">
-                          Write a Review
-                        </button>
-                      )}
-                      
-                      {(order.status === 'processing' || order.status === 'shipped') && (
-                        <button className="w-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white py-3 mt-3 transition-colors">
-                          Cancel Order
-                        </button>
-                      )}
-                    </div>
+                    )}
+                    
+                    {(order.status === 'processing' || order.status === 'shipped') && (
+                      <button className="w-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white py-3.5 text-sm font-medium rounded-lg transition-colors">
+                        Cancel Order
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
-            
-      {/* Custom Styles */}
-      <style jsx global>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
-    </div>
+      </div>
+    </main>
+  </div>
   );
 } 
