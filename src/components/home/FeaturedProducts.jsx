@@ -47,7 +47,7 @@ export default function FeaturedProducts({ products }) {
         // Actual products
         products.map((product, index) => (
           <div
-            key={product.id}
+            key={product?.id}
             className="group bg-background border border-border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col"
           >
             {/* Image Container */}

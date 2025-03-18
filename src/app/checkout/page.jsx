@@ -186,9 +186,8 @@ export default function CheckoutPage() {
      
       dispatch(place_order(orderDetails));  
           const generatedOrderId = 'ORD' + Math.floor(100000 + Math.random() * 900000);
-
-      setOrderId(generatedOrderId);
-
+        
+      router.push('/');
       
       // Clear the cart after successful order
       clearCart();
@@ -645,7 +644,7 @@ export default function CheckoutPage() {
                         Processing...
                       </>
                     ) : (
-                      'Place Orderrr'
+                      'Place Order'
                     )}
                   </button>
                   

@@ -102,7 +102,6 @@ export default function OrdersPage() {
       setOrders(mockOrders);
       setLoading(false);
     };
-    console.log("orderinfo",storedUser._id)
     dispatch(get_orders({ status: activeFilter, customerId: storedUser._id }));
       
     
@@ -250,7 +249,7 @@ export default function OrdersPage() {
                           
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
                             <span className="text-base sm:text-lg text-textColor-muted">
-                              Total: <span className="text-primary font-medium">₹{order?.price?.toFixed(2)}</span>
+                              Total: <span className="text-primary font-medium">₹{order?.totalPrice?.toFixed(2)}</span>
                             </span>
                            <Link
                               href={`/account/orders/${order._id}`}
@@ -258,6 +257,7 @@ export default function OrdersPage() {
                             >
                               View Details
                             </Link>
+                            
 
                           </div>
                         </div>

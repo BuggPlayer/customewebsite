@@ -297,10 +297,10 @@ export default function OrderDetailPage() {
                     </Link>
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                     <h1 className="text-2xl lg:text-3xl font-light text-primary">
-  Order # ...{myOrder._id.slice(-5)}
-</h1>
-                      <span className={`px-4 py-2 rounded-full text-sm ${statusBadge.bg} ${statusBadge.text} border ${statusBadge.border}`}>
-                        {statusBadge.label}
+                    Order # ...{myOrder._id?.slice(-5)}
+                  </h1>
+                          <span className={`px-4 py-2 rounded-full text-sm ${statusBadge.bg} ${statusBadge.text} border ${statusBadge.border}`}>
+                        {statusBadge?.label}
                       </span>
                     </div>
                     <p className="text-textColor-muted mt-2">
@@ -369,19 +369,19 @@ export default function OrderDetailPage() {
                           
                           <div className="flex-1 min-w-0">
                             <Link 
-                              href={`/products/${item.id}`}
+                              href={`/products/${item?.id}`}
                               className="text-lg font-medium hover:text-primary transition-colors truncate block"
                             >
                               {item.name}
                             </Link>
                             <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-textColor-muted">
-                              <span className="bg-gray-100 px-3 py-1 rounded-md">Size: {item.size}</span>
+                              <span className="bg-gray-100 px-3 py-1 rounded-md">Size: {item?.size}</span>
                               <span>Quantity: {item.quantity}</span>
                             </div>
                           </div>
                           
                           <div className="text-right">
-                            <span className="font-medium text-lg">₹{item.price.toFixed(2)}</span>
+                            <span className="font-medium text-lg">₹{item?.price?.toFixed(2)}</span>
                           </div>
                         </div>
                       ))}
@@ -393,14 +393,14 @@ export default function OrderDetailPage() {
                     <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
                       <h3 className="text-lg font-medium text-primary mb-4">Shipping Address</h3>
                       <div className="text-textColor-muted space-y-1.5">
-                        {formatAddress(myOrder?.shippingAddress)}
+                        {formatAddress(myOrder?.shippingInfo)}
                       </div>
                     </div>
                     
                     <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
                       <h3 className="text-lg font-medium text-primary mb-4">Billing Address</h3>
                       <div className="text-textColor-muted space-y-1.5">
-                        {formatAddress(myOrder?.billingAddress)}
+                        {formatAddress(myOrder?.shippingInfo)}
                       </div>
                     </div>
                   </div>
@@ -413,24 +413,24 @@ export default function OrderDetailPage() {
                   <div className="space-y-4">
                     <div className="flex justify-between">
                       <span className="text-textColor-muted">Subtotal</span>
-                      <span className="font-medium">₹{myOrder?.subtotal?.toFixed(2)}</span>
+                      <span className="font-medium">₹{myOrder?.totalPrice?.toFixed(2)}</span>
                     </div>
                     
                     <div className="flex justify-between">
                       <span className="text-textColor-muted">Shipping</span>
                       <span className="font-medium">
-                        {myOrder.shipping === 0 ? 'Free' : `₹${myOrder?.shipping?.toFixed(2)}`}
+                        {myOrder.shipping === 0 ? 'Free' : `₹${myOrder?.shipping_fee?.toFixed(2)}`}
                       </span>
                     </div>
                     
                     <div className="flex justify-between">
                       <span className="text-textColor-muted">Tax</span>
-                      <span className="font-medium">₹{myOrder?.tax?.toFixed(2)}</span>
+                      <span className="font-medium">₹{0}</span>
                     </div>
                     
                     <div className="border-t border-gray-200 pt-4 flex justify-between font-medium text-lg">
                       <span>Total</span>
-                      <span className="text-primary">₹{myOrder?.total?.toFixed(2)}</span>
+                      <span className="text-primary">₹{myOrder?.totalPrice?.toFixed(2)}</span>
                     </div>
                   </div>
                   
