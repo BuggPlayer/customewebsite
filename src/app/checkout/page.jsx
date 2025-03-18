@@ -36,7 +36,7 @@ export default function CheckoutPage() {
     city: '',
     state: '',
     postalCode: '',
-    paymentMethod: 'COD'
+    paymentMethod: 'cod'
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -145,38 +145,50 @@ export default function CheckoutPage() {
       }
       return;
     }
-    
     setIsSubmitting(true);
     // useWindowScrollToTop();
     try {
 
       const orderDetails = {
-        price: total,
         products: cart.map((item) => ({
           productId: item.productId,
           name: item.name,
           price: item.price,
+          discounted_price: item.discounted_price || 0, // Default to 0 if no discount
           quantity: item.quantity,
-          image: item.image,
+          image: item.images?.[0] || "default.jpg", // Fallback to a default image
+          discount: item.discount || 0, // Default to 0 if no discount
           sellerId: item.sellerId,
         })),
-        shipping_fee: shipping,
-        sellerId: cart[0]?.sellerId,
-        shippingInfo: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.postalCode}, ${formData.country}`,
-        userId: userInfo?._id,
-        userName: formData?.fullName,
-        paymentMethod: formData?.paymentMethod,
+        shipping_fee: shipping, // Numeric shipping fee
+        shippingInfo: {
+          address: formData.address, // Shipping address
+          city: formData.city, // City
+          state: formData.state, // State or region
+          postalCode: formData.postalCode, // Postal or ZIP code
+          country: formData.country, // Country
+          deliveryNotes: formData.deliveryNotes || "", // Optional delivery instructions
+        },
+        userInfo: {
+          userId: userInfo?._id, // User ID from authenticated user
+          userName: formData.name, // Full name from form
+          userPhone: formData.phone, // Phone number from form
+          userEmail: formData.email, // Email from form
+        },
+        totalPrice: total, // Numeric total price (products + shipping)
+        paymentMethod: formData.paymentMethod, // Payment method (e.g., "credit_card", "paypal")
+        status: "pending", // Initial order status
+        paymentStatus: "unpaid", // Initial payment status
+        createdAt: new Date(), // Timestamp of order creation
+        updatedAt: new Date(), // Timestamp of last update
       };
-      console.log("details" , orderDetails)
+
      
-      dispatch(place_order(orderDetails));
-      // Simulate API request
-      // await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Generate a random order ID
-      const generatedOrderId = 'ORD' + Math.floor(100000 + Math.random() * 900000);
+      dispatch(place_order(orderDetails));  
+          const generatedOrderId = 'ORD' + Math.floor(100000 + Math.random() * 900000);
+
       setOrderId(generatedOrderId);
-      setOrderPlaced(true);
+
       
       // Clear the cart after successful order
       clearCart();
@@ -633,7 +645,7 @@ export default function CheckoutPage() {
                         Processing...
                       </>
                     ) : (
-                      'Place Order'
+                      'Place Orderrr'
                     )}
                   </button>
                   

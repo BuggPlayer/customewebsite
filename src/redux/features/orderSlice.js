@@ -5,19 +5,17 @@ import { base_URL } from "../../utils/apiList";
 export const place_order = createAsyncThunk(
   "order/place_order",
   async (
-    { price, products, shipping_fee, shippingInfo, userId, navigate, items ,paymentMethod},
+    { totalPrice, products, shipping_fee, shippingInfo,paymentMethod,userInfo},
     { rejectWithValue }
   ) => {
     try {
       const { data } = await axios.post(`${base_URL}/api/home/order/palce-order`, {
-        price,
+        totalPrice,
         products,
         shipping_fee,
         shippingInfo,
-        userId,
-        navigate,
-        items,
-        paymentMethod
+        userInfo,
+        paymentMethod,
       });
       return true;
     } catch (error) {
