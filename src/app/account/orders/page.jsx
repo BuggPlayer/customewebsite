@@ -238,7 +238,7 @@ export default function OrdersPage() {
                         <div className="bg-background-primary p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-5">
                           <div className="flex-1">
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                              <h3 className="text-lg sm:text-xl font-light text-primary">Order #{order._id}</h3>
+                              <h3 className="text-lg sm:text-xl font-light text-primary">Order #...{order._id.slice(-5)}</h3>
                               <span className={`px-3 py-1.5 rounded-full text-sm ${statusBadge.bg} ${statusBadge.text} border ${statusBadge.border}`}>
                                 {statusBadge.label}
                               </span>
@@ -250,7 +250,7 @@ export default function OrdersPage() {
                           
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
                             <span className="text-base sm:text-lg text-textColor-muted">
-                              Total: <span className="text-primary font-medium">₹{order.price.toFixed(2)}</span>
+                              Total: <span className="text-primary font-medium">₹{order?.price?.toFixed(2)}</span>
                             </span>
                            <Link
                               href={`/account/orders/${order._id}`}

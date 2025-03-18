@@ -296,7 +296,9 @@ export default function OrderDetailPage() {
                       <span className="text-sm font-medium">Back to Orders</span>
                     </Link>
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                      <h1 className="text-2xl lg:text-3xl font-light text-primary">Order #{myOrder._id}</h1>
+                    <h1 className="text-2xl lg:text-3xl font-light text-primary">
+  Order # ...{myOrder._id.slice(-5)}
+</h1>
                       <span className={`px-4 py-2 rounded-full text-sm ${statusBadge.bg} ${statusBadge.text} border ${statusBadge.border}`}>
                         {statusBadge.label}
                       </span>

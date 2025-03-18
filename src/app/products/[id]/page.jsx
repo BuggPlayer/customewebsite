@@ -401,7 +401,7 @@ export default function ProductDetailPage() {
                   ) : stock <= 0 ? (
                     'Out of Stock'
                   ) : (
-                    'Add to Carttt'
+                    'Add to Cart'
                   )}
                 </button>
               </div>
