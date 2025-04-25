@@ -6,15 +6,16 @@ import { useCart } from '@/context/CartContext';
 
 export default function FeaturedProducts({ products }) {
   const { addToCart } = useCart();
-  const [isLoading, setIsLoading] = useState(true); // Initially true for loading state
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Wait for real data to stop showing skeletons
   useEffect(() => {
-    const timer = setTimeout(() => {
+    if (!products || products.length === 0) {
+      setIsLoading(true);
+    } else {
       setIsLoading(false);
-    }, 500); // Simulated loading time
-
-    return () => clearTimeout(timer);
-  }, []);
+    }
+  }, [products]);
 
   const handleAddToCart = (product) => {
     console.log('prodd', product);
