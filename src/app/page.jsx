@@ -77,7 +77,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="collection-card relative aspect-[3/4] group cursor-pointer overflow-hidden">
               <Image 
-                src='/assets/frontend_assets/products/placeholdr.svg' 
+                src="/assets/frontend_assets/collections/woman.jpg"
                 alt="Women's Collection"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -94,7 +94,7 @@ export default function Home() {
             
             <div className="collection-card relative aspect-[3/4] group cursor-pointer overflow-hidden">
               <Image 
-                src="/assets/frontend_assets/products/placeholdr.svg" 
+                src="/assets/frontend_assets/collections/men.jpg" 
                 alt="Men's Collection"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -111,7 +111,7 @@ export default function Home() {
             
             <div className="collection-card relative aspect-[3/4] group cursor-pointer overflow-hidden">
               <Image 
-                src="/assets/frontend_assets/products/placeholdr.svg" 
+                src="/assets/frontend_assets/collections/unisex.jpg" 
                 alt="Unisex Collection"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"

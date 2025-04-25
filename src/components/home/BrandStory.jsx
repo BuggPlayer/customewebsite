@@ -65,7 +65,7 @@ export default function BrandStory() {
             <div className="space-y-4">
               <div className="relative h-48 md:h-64 rounded-lg overflow-hidden">
                 <Image 
-                  src="/assets/frontend_assets/products/placeholdr.svg" 
+                  src="/assets/frontend_assets/collections/making.jpg" 
                   alt="NOZE perfume laboratory" 
                   fill 
                   className="object-cover"
@@ -73,7 +73,7 @@ export default function BrandStory() {
               </div>
               <div className="relative h-48 md:h-40 rounded-lg overflow-hidden">
                 <Image 
-                  src="/assets/frontend_assets/products/placeholdr.svg" 
+                  src="/assets/frontend_assets/collections/making2.jpg" 
                   alt="NOZE perfume ingredients" 
                   fill 
                   className="object-cover"
@@ -83,7 +83,7 @@ export default function BrandStory() {
             <div className="space-y-4 mt-6">
               <div className="relative h-48 md:h-40 rounded-lg overflow-hidden">
                 <Image 
-                  src="/assets/frontend_assets/products/placeholdr.svg" 
+                   src="/assets/frontend_assets/collections/factory1.jpg" 
                   alt="NOZE perfume bottles" 
                   fill 
                   className="object-cover"
@@ -91,7 +91,7 @@ export default function BrandStory() {
               </div>
               <div className="relative h-48 md:h-64 rounded-lg overflow-hidden">
                 <Image 
-                  src="/assets/frontend_assets/products/placeholdr.svg" 
+                  src="/assets/frontend_assets/collections/making.jpg" 
                   alt="NOZE perfumer at work" 
                   fill 
                   className="object-cover"
