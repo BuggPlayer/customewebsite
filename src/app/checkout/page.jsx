@@ -45,10 +45,10 @@ export default function CheckoutPage() {
   
   useEffect(() => {
     // Check if cart is empty, redirect to cart page if so
-    if (cart.length === 0 && !orderPlaced) {
-      router.push('/cart');
-      return;
-    }
+    // if (cart.length === 0 && !orderPlaced) {
+    //   router.push('/cart');
+    //   return;
+    // }
     
     // Simulate loading
     const timer = setTimeout(() => {

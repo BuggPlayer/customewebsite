@@ -131,7 +131,7 @@ export default function AboutPage() {
             Discover our collection of unique fragrances and find your perfect scent.
           </p>
           <Link 
-            href="/products" 
+            href="/" 
             className="inline-block bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900 transition-colors"
           >
             Shop Now

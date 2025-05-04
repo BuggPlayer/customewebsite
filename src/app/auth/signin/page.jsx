@@ -53,7 +53,7 @@ export default function SigninPage() {
         {/* Left Image Section */}
         <div className="md:w-1/2 relative hidden md:block">
           <Image
-            src="/assets/frontend_assets/products/placeholdr.svg" // Replace with your image path
+            src="/assets/frontend_assets/collections/making2.jpg" // Replace with your image path
             alt="Login Visual"
             fill
             className="object-cover"

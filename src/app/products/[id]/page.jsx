@@ -220,11 +220,11 @@ export default function ProductDetailPage() {
         {/* Breadcrumbs */}
         <div className="container mx-auto px-4">
           <div className="text-sm text-textColor-muted mb-8">
-            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
-            <span className="mx-2">/</span>
-            <span className="text-primary">{name}</span>
+            {/* <Link href="/" className="hover:text-primary transition-colors">Home</Link> */}
+            {/* <span className="mx-2">/</span> */}
+            {/* <Link href="/products" className="hover:text-primary transition-colors">Products</Link> */}
+            {/* <span className="mx-2">/</span> */}
+            {/* <span className="text-primary">{name}</span> */}
           </div>
           
           {/* Product Section */}
@@ -610,10 +610,10 @@ export default function ProductDetailPage() {
           </div>
           
           {/* Related Products */}
-          <div>
+          {/* <div>
             <h2 className="text-2xl font-light text-primary mb-8 text-center">You May Also Like</h2>
             <RelatedProducts currentProductId={id} />
-          </div>
+          </div> */}
         </div>
       </main>
       

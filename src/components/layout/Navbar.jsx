@@ -89,7 +89,7 @@ export default function Navbar() {
   
   const navLinks = [
     { label: 'Home', href: '/' },
-    { label: 'Shop', href: '/products' },
+    // { label: 'Shop', href: '/products' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
     { label: 'My Dashboard', href: '/account/orders' }
