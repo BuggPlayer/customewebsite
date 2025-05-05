@@ -185,12 +185,12 @@ export default function CheckoutPage() {
 
      
       dispatch(place_order(orderDetails));  
-          const generatedOrderId = 'ORD' + Math.floor(100000 + Math.random() * 900000);
+          // const generatedOrderId = 'ORD' + Math.floor(100000 + Math.random() * 900000);
         
-      router.push('/');
+      // router.push('/');
       
       // Clear the cart after successful order
-      clearCart();
+      // clearCart();
     } catch (error) {
       console.error('Error placing order:', error);
     } finally {
@@ -198,16 +198,21 @@ export default function CheckoutPage() {
     }
   };
   useEffect(() => {
+
+    console.log("errorMessage0---",errorMessage, successMessage)
     if (successMessage) {
       toast.success(successMessage);
+            clearCart();
+            router.push('/');
       // setShowConfirmationModal(true);
       // setTimeout(() => dispatch(messageClear()), 3000);
     }
     if (errorMessage) {
+      // alert("wefrb" ,errorMessage)
       toast.error(errorMessage);
       // setTimeout(() => dispatch(messageClear()), 3000);
     }
-  }, [successMessage, errorMessage, dispatch]);
+  }, [successMessage, errorMessage]);
   if (loading) {
     return (
       <div className="min-h-screen bg-background">

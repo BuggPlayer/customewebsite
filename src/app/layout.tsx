@@ -6,6 +6,8 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Providers } from '@/redux/provider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -31,6 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Footer />
             </CartProvider>
           </WishlistProvider>
+          <ToastContainer />
+
         </Providers>
         </GoogleOAuthProvider>
       </body>
