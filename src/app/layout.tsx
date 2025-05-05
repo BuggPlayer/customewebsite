@@ -8,6 +8,8 @@ import { Providers } from '@/redux/provider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Analytics } from '@vercel/analytics/next';
+
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -30,6 +32,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <CartProvider>
               <Navbar />
               {children}
+              <Analytics />
+
               <Footer />
             </CartProvider>
           </WishlistProvider>
