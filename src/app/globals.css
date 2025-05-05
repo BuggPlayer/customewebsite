@@ -17,6 +17,26 @@
   --border-color-faded: rgba(210, 163, 75, 0.3);
 }
 
+@media print {
+  .invoice-print {
+    visibility: visible;
+    position: static;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    background: white;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+  }
+}
 @layer base {
   body {
     @apply bg-background font-primary text-textColor-secondary;

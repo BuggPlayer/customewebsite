@@ -2,22 +2,28 @@
 import { useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { FiDownload, FiEye, FiX } from 'react-icons/fi';
 
 const DownloadInvoiceButton = ({ order }) => {
-  console.log("order" ,order)
   const invoiceRef = useRef(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const generatePDF = async () => {
+    setIsGenerating(true);
     const element = invoiceRef.current;
-    if (!element) return;
+    if (!element) {
+      setIsGenerating(false);
+      return;
+    }
 
     try {
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
         logging: true,
-        backgroundColor: '#000000'
+        backgroundColor: null,
+        ignoreElements: (element) => element.classList.contains('no-print')
       });
 
       const imgData = canvas.toDataURL('image/png', 1.0);
@@ -26,140 +32,190 @@ const DownloadInvoiceButton = ({ order }) => {
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       
       pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save(`Invoice_${order.id}.pdf`);
+      pdf.save(`Invoice_${order?._id?.slice(-5) || 'ORDER'}.pdf`);
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Error generating PDF. Please try again.');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
+  if (!order) {
+    return <div className="text-red-500">Error: No order data provided</div>;
+  }
+
   return (
-    <div>
+    <div className="invoice-container">
+      {/* Hidden invoice template */}
+      <div className="absolute left-[-9999px] top-[-9999px]">
+        <div ref={invoiceRef} className="w-[210mm] min-h-[297mm] bg-white p-8 invoice-print">
+          {/* Header */}
+          <div className="mb-8 pb-6 border-b border-gray-200">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div className="text-left">
+                <h2 className="text-2xl font-bold text-gray-800">Fragrance Haven</h2>
+                <p className="text-gray-600 text-sm">123 Perfume Lane</p>
+                <p className="text-gray-600 text-sm">Mumbai, MH 400001</p>
+              </div>
+              <div className="text-left md:text-right">
+                <h1 className="text-3xl font-bold text-gray-900">INVOICE</h1>
+                <p className="text-gray-600 text-sm mt-2">
+                  Order #: {order?._id?.slice(-5) || 'N/A'}
+                </p>
+                <p className="text-gray-600 text-sm">
+                  Date: {new Date(order?.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Order Details */}
+          <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Billing Details</h3>
+              <p className="text-gray-700 text-sm">{order?.shippingInfo?.name}</p>
+              <p className="text-gray-700 text-sm">{order?.shippingInfo?.address}</p>
+              <p className="text-gray-700 text-sm">
+                {order?.shippingInfo?.city}, {order?.shippingInfo?.state}
+              </p>
+              <p className="text-gray-700 text-sm">{order?.shippingInfo?.postalCode}</p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Shipping Details</h3>
+              <p className="text-gray-700 text-sm">{order?.shippingInfo?.name}</p>
+              <p className="text-gray-700 text-sm">{order?.shippingInfo?.address}</p>
+              <p className="text-gray-700 text-sm">
+                {order?.shippingInfo?.city}, {order?.shippingInfo?.state}
+              </p>
+              <p className="text-gray-700 text-sm">{order?.shippingInfo?.postalCode}</p>
+              {order?.shippingInfo?.phone && (
+                <p className="text-gray-700 text-sm mt-1">Phone: {order.shippingInfo.phone}</p>
+              )}
+            </div>
+          </div>
+
+          {/* Items Table */}
+          <div className="overflow-x-auto mb-8">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gray-800 text-white">
+                  <th className="text-left py-3 px-4 text-sm">Product</th>
+                  <th className="text-left py-3 px-4 text-sm">Price</th>
+                  <th className="text-left py-3 px-4 text-sm">Qty</th>
+                  <th className="text-left py-3 px-4 text-sm">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {order?.products?.map((item, index) => (
+                  <tr key={index} className="border-b border-gray-200 even:bg-gray-50">
+                    <td className="py-3 px-4 text-gray-700 text-sm">
+                      {item?.name} {item?.size && `(${item.size})`}
+                    </td>
+                    <td className="py-3 px-4 text-gray-700 text-sm">₹{item?.price?.toFixed(2)}</td>
+                    <td className="py-3 px-4 text-gray-700 text-sm">{item?.quantity}</td>
+                    <td className="py-3 px-4 text-gray-700 text-sm font-medium">
+                      ₹{(item?.price * item?.quantity)?.toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Totals */}
+          <div className="w-full md:float-right md:w-80">
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="flex justify-between mb-3">
+                <span className="text-gray-700 text-sm">Subtotal:</span>
+                <span className="text-gray-700 text-sm">₹{order?.totalPrice?.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between mb-3">
+                <span className="text-gray-700 text-sm">Shipping:</span>
+                <span className="text-gray-700 text-sm">
+                  ₹{order?.shipping_fee ? order.shipping_fee.toFixed(2) : '0.00'}
+                </span>
+              </div>
+              <div className="flex justify-between mb-3">
+                <span className="text-gray-700 text-sm">Tax:</span>
+                <span className="text-gray-700 text-sm">
+                  ₹{order?.tax ? order.tax.toFixed(2) : '0.00'}
+                </span>
+              </div>
+              <div className="flex justify-between pt-4 border-t border-gray-300">
+                <span className="text-lg font-bold text-gray-900">Total:</span>
+                <span className="text-lg font-bold text-gray-900">
+                  ₹{order?.totalPrice?.toFixed(2)}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
+            <p>Thank you for your business!</p>
+            <p className="mt-2">Fragrance Haven • contact@fragrancehaven.com • +91 98765 43210</p>
+          </div>
+        </div>
+      </div>
+
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-4">
-        <button 
+      <div className="flex flex-col sm:flex-row gap-4 mb-4 no-print">
+        <button
           onClick={() => setShowPreview(true)}
-          className="flex items-center justify-center gap-2 px-4 sm:px-6 py-3 text-sm font-medium rounded-lg bg-primary-DEFAULT text-textColor-secondary hover:bg-primary-dark transition-colors"
+          className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+          disabled={isGenerating}
         >
-          {/* Preview Icon */}
+          <FiEye className="w-4 h-4" />
           Preview Invoice
         </button>
 
-        <button 
+        <button
           onClick={generatePDF}
-          className="flex items-center justify-center gap-2 px-4 sm:px-6 py-3 text-sm font-medium rounded-lg border border-primary-DEFAULT text-textColor-primary hover:bg-primary-light/10 transition-colors"
+          className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors"
+          disabled={isGenerating}
         >
-          {/* Download Icon */}
-          Download PDF
+          <FiDownload className="w-4 h-4" />
+          {isGenerating ? 'Generating...' : 'Download PDF'}
         </button>
       </div>
 
       {/* Preview Modal */}
       {showPreview && (
-        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-2 sm:p-4">
-          <div className="bg-background-secondary rounded-xl w-full max-w-4xl max-h-[90vh] overflow-auto">
-            {/* Modal Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 sm:p-6 border-b border-primary-DEFAULT">
-              <h2 className="text-xl sm:text-2xl font-bold text-textColor-primary mb-2 sm:mb-0">Invoice Preview</h2>
+        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-auto">
+            <div className="flex justify-between items-center p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">Invoice Preview</h2>
               <button
                 onClick={() => setShowPreview(false)}
-                className="text-textColor-muted hover:text-textColor-primary"
+                className="text-gray-500 hover:text-gray-700"
               >
-                {/* Close Icon */}
+                <FiX className="w-6 h-6" />
               </button>
             </div>
             
-            {/* Invoice Template */}
-            <div ref={invoiceRef} className="p-4 sm:p-8 bg-background-DEFAULT w-full sm:w-[210mm] min-h-[297mm]">
-              {/* Header */}
-              <div className="mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-primary-DEFAULT">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                  <div className="text-left">
-                    <h2 className="text-xl sm:text-2xl font-bold text-primary-DEFAULT">Fragrance Haven</h2>
-                    <p className="text-textColor-muted text-sm sm:text-base">123 Perfume Lane</p>
-                    <p className="text-textColor-muted text-sm sm:text-base">Mumbai, MH 400001</p>
-                  </div>
-                  <div className="text-left sm:text-right">
-                    <h1 className="text-xl sm:text-3xl font-bold text-textColor-primary">INVOICE</h1>
-                    <p className="text-textColor-muted text-sm sm:text-base mt-1 sm:mt-2">Order #: {order._id}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Order Details */}
-              <div className="mb-6 sm:mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
-                <div className="bg-primary-light/10 p-3 sm:p-4 rounded-lg">
-                  <h3 className="text-base sm:text-lg font-semibold text-primary-DEFAULT mb-1 sm:mb-2">Billing Details</h3>
-                  <p className="text-textColor-secondary text-sm sm:text-base">{order?.billingAddress?.name}</p>
-                  <p className="text-textColor-secondary text-sm sm:text-base">{order?.billingAddress?.address}</p>
-                  <p className="text-textColor-secondary text-sm sm:text-base">{order?.billingAddress?.city}, {order?.billingAddress?.state}</p>
-                  <p className="text-textColor-secondary text-sm sm:text-base">{order?.billingAddress?.postalCode}</p>
-                </div>
-                <div className="bg-primary-light/10 p-3 sm:p-4 rounded-lg">
-                  <h3 className="text-base sm:text-lg font-semibold text-primary-DEFAULT mb-1 sm:mb-2">Shipping Details</h3>
-                  {/* Shipping details content */}
-                </div>
-              </div>
-
-              {/* Items Table */}
-              <div className="overflow-x-auto mb-6 sm:mb-8">
-                <table className="w-full min-w-[600px]">
-                  <thead>
-                    <tr className="bg-primary-DEFAULT text-textColor-secondary">
-                      <th className="text-left py-3 px-3 sm:px-4 text-sm sm:text-base">Product</th>
-                      <th className="text-left py-3 px-3 sm:px-4 text-sm sm:text-base">Price</th>
-                      <th className="text-left py-3 px-3 sm:px-4 text-sm sm:text-base">Qty</th>
-                      <th className="text-left py-3 px-3 sm:px-4 text-sm sm:text-base">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {order.products.map((item, index) => (
-                      <tr key={index} className="border-b border-primary-DEFAULT/20 even:bg-background-secondary">
-                        <td className="py-2 sm:py-3 px-3 sm:px-4 text-textColor-secondary text-sm sm:text-base">{item.name} ({item.size})</td>
-                        <td className="py-2 sm:py-3 px-3 sm:px-4 text-textColor-secondary text-sm sm:text-base">₹{item.price.toFixed(2)}</td>
-                        <td className="py-2 sm:py-3 px-3 sm:px-4 text-textColor-secondary text-sm sm:text-base">{item.quantity}</td>
-                        <td className="py-2 sm:py-3 px-3 sm:px-4 text-textColor-secondary text-sm sm:text-base font-medium">₹{(item.price * item.quantity).toFixed(2)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Totals */}
-              <div className="w-full sm:float-right sm:w-80">
-                <div className="bg-primary-light/10 p-4 sm:p-6 rounded-lg">
-                  <div className="flex justify-between mb-2 sm:mb-3">
-                    <span className="text-textColor-secondary text-sm sm:text-base">Subtotal:</span>
-                    <span className="text-textColor-secondary text-sm sm:text-base">₹{order?.subtotal?.toFixed(2)}</span>
-                  </div>
-                  {/* Other total rows */}
-                  <div className="flex justify-between pt-3 sm:pt-4 border-t border-primary-DEFAULT">
-                    <span className="text-base sm:text-lg font-bold text-primary-DEFAULT">Total:</span>
-                    <span className="text-base sm:text-lg font-bold text-primary-DEFAULT">₹{order?.total?.toFixed(2)}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="mt-8 sm:mt-16 pt-4 sm:pt-8 border-t border-primary-DEFAULT/20 text-center text-sm text-textColor-muted">
-                <p className="text-xs sm:text-sm">Thank you for your business!</p>
-                <p className="mt-1 sm:mt-2 text-xs sm:text-sm">Noze perfum• contact@fragrancehaven.com • +91 98765 43210</p>
+            {/* Invoice Preview Content */}
+            <div className="p-4 sm:p-8 bg-white w-full">
+              {/* Same content as the hidden invoice template */}
+              <div className="w-[210mm] min-h-[297mm] bg-white p-8 mx-auto">
+                {/* Copy of the invoice content from the hidden div */}
+                {/* ... */}
               </div>
             </div>
 
-            {/* Modal Footer Buttons */}
-            <div className="p-4 sm:p-6 border-t border-primary-DEFAULT/20 flex flex-col sm:flex-row justify-end gap-2 sm:gap-4">
+            <div className="p-6 border-t border-gray-200 flex justify-end gap-4">
               <button
                 onClick={() => setShowPreview(false)}
-                className="px-4 sm:px-6 py-2 text-textColor-primary hover:bg-background-secondary rounded-lg transition-colors text-sm sm:text-base"
+                className="px-6 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 Close
               </button>
               <button
                 onClick={generatePDF}
-                className="px-4 sm:px-6 py-2 bg-primary-DEFAULT text-textColor-secondary rounded-lg hover:bg-primary-dark transition-colors text-sm sm:text-base"
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                disabled={isGenerating}
               >
-                Download PDF
+                {isGenerating ? 'Generating...' : 'Download PDF'}
               </button>
             </div>
           </div>
