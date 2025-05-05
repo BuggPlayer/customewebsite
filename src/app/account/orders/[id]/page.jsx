@@ -272,205 +272,205 @@ export default function OrderDetailPage() {
     delivery_status
     );
   console.log("myOrder--", myOrder)
+
+
   return (
     <div className="min-h-screen bg-background text-textColor-secondary font-primary">
-    <main className="py-8 md:py-12 lg:py-16">
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex flex-col md:flex-row gap-6 lg:gap-8">
-          {/* Sidebar */}
-          <div className="w-full md:w-64 lg:w-72 shrink-0">
-            <AccountSidebar activePage="orders" />
-          </div>
-          
-          {/* Main Content */}
-          <div className="flex-1">
-            <div className="bg-background-secondary p-5 sm:p-7 lg:p-9 rounded-xl shadow-sm">
-              {/* Order Header */}
-              <div className="mb-8">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                  <div>
-                    <Link href="/account/orders" className="text-primary flex items-center hover:underline mb-2 transition-colors duration-200">
-                      <svg className="w-5 h-5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                      </svg>
-                      <span className="text-sm font-medium">Back to Orders</span>
-                    </Link>
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                    <h1 className="text-2xl lg:text-3xl font-light text-primary">
-                    Order # ...{myOrder._id?.slice(-5)}
-                  </h1>
-                          <span className={`px-4 py-2 rounded-full text-sm ${statusBadge.bg} ${statusBadge.text} border ${statusBadge.border}`}>
-                        {statusBadge?.label}
-                      </span>
+      <main className="py-8 md:py-12 lg:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row gap-6 lg:gap-8">
+            {/* Sidebar */}
+            <div className="w-full md:w-64 lg:w-72 shrink-0">
+              <AccountSidebar activePage="orders" />
+            </div>
+
+            {/* Main Content */}
+            <div className="flex-1">
+              <div className="bg-background-secondary p-5 sm:p-7 lg:p-9 rounded-xl shadow-sm">
+                {/* Order Header */}
+                <div className="mb-8">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                      <Link href="/account/orders" className="text-primary flex items-center hover:underline mb-2 transition-colors duration-200">
+                        <svg className="w-5 h-5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        <span className="text-sm font-medium">Back to Orders</span>
+                      </Link>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                        <h1 className="text-xl sm:text-2xl lg:text-3xl font-light text-primary">
+                          Order #...{myOrder._id?.slice(-5)}
+                        </h1>
+                        <span className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm ${statusBadge.bg} ${statusBadge.text} border ${statusBadge.border}`}>
+                          {statusBadge?.label}
+                        </span>
+                      </div>
+                      <p className="text-textColor-muted mt-2 text-sm sm:text-base">
+                        Placed on {formatDate(myOrder.createdAt)}
+                      </p>
                     </div>
-                    <p className="text-textColor-muted mt-2">
-                      Placed on {formatDate(myOrder.createdAt)}
-                    </p>
                   </div>
-                </div>
-                
-                {/* Order Timeline */}
-                <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs mb-8">
-                  <h3 className="text-lg font-medium text-primary mb-6">Order Status Timeline</h3>
-                  
-                  <div className="relative">
-                    <div className="hidden sm:block absolute top-7 left-20 right-20 h-[2px] bg-gray-200"></div>
-                    <div className="grid sm:grid-cols-4 gap-6">
-                      {timelineSteps.map((step, index) => (
-                        <div key={step.id} className="flex items-center sm:block">
-                          <div className="flex sm:flex-col items-center gap-4">
-                            <div className={`w-12 h-12 rounded-xl border-2 flex items-center justify-center shrink-0 ${
-                              step.completed 
-                                ? 'border-primary bg-primary/10 text-primary' 
-                                : 'border-gray-300 bg-gray-50 text-gray-400'
-                            }`}>
-                              {step.completed ? (
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
-                                </svg>
-                              ) : (
-                                <span className="font-medium">{index + 1}</span>
-                              )}
-                            </div>
-                            <div className="sm:text-center sm:mt-3">
-                              <p className={`font-medium ${step.completed ? 'text-primary' : 'text-textColor-muted'}`}>
-                                {step.label}
-                              </p>
-                              {step.date && (
-                                <p className="text-sm text-textColor-muted mt-1.5">{step.date}</p>
-                              )}
+
+                  {/* Order Timeline - Improved Mobile Version */}
+                  <div className="bg-primary-light/10 p-4 sm:p-6 rounded-xl shadow-xs mb-8">
+                    <h3 className="text-lg font-medium text-primary mb-4 sm:mb-6">Order Status Timeline</h3>
+                    
+                    <div className="relative pl-4 sm:pl-0">
+                      <div className="absolute left-5 sm:hidden w-0.5 h-full bg-gray-200 top-4"></div>
+                      <div className="space-y-8 sm:space-y-0">
+                        {timelineSteps.map((step, index) => (
+                          <div key={step.id} className="relative flex items-start sm:inline-block sm:w-1/4">
+                            <div className="flex items-center sm:flex-col sm:text-center">
+                              <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl border-2 flex items-center justify-center shrink-0 ${
+                                step.completed 
+                                  ? 'border-primary bg-primary/10 text-primary' 
+                                  : 'border-gray-300 bg-gray-50 text-gray-400'
+                              }`}>
+                                {step.completed ? (
+                                  <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+                                  </svg>
+                                ) : (
+                                  <span className="text-sm sm:text-base font-medium">{index + 1}</span>
+                                )}
+                              </div>
+                              <div className="ml-4 sm:ml-0 sm:mt-3 flex-1 sm:flex-none">
+                                <p className={`text-sm sm:text-base font-medium ${step.completed ? 'text-primary' : 'text-textColor-muted'}`}>
+                                  {step.label}
+                                </p>
+                                {step.date && (
+                                  <p className="text-xs sm:text-sm text-textColor-muted mt-1">{step.date}</p>
+                                )}
+                              </div>
                             </div>
                           </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Order Items */}
+                  <div className="lg:col-span-2 space-y-6">
+                    <div className="bg-primary-light/10 p-4 sm:p-6 rounded-xl shadow-xs">
+                      <h3 className="text-lg font-medium text-primary mb-4 sm:mb-6">Order Items ({myOrder?.products?.length})</h3>
+                      
+                      <div className="space-y-4 sm:space-y-6">
+                        {myOrder?.products?.map((item, index) => (
+                          <div key={index} className="flex flex-col sm:flex-row items-start gap-4 sm:gap-5 p-4 bg-background rounded-lg">
+                            <div className="w-20 h-20 sm:w-24 sm:h-24 relative rounded-lg overflow-hidden bg-gray-100 shrink-0">
+                              <Image
+                                src={item.image}
+                                alt={item.name}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 640px) 80px, 96px"
+                              />
+                            </div>
+                            
+                            <div className="flex-1 min-w-0">
+                              <Link 
+                                href={`/products/${item?.id}`}
+                                className="text-base sm:text-lg font-medium hover:text-primary transition-colors line-clamp-2"
+                              >
+                                {item.name}
+                              </Link>
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-2 text-sm text-textColor-muted">
+                                <span className="bg-gray-100 px-2 py-1 rounded-md text-xs sm:text-sm">Size: {item?.size}</span>
+                                <span className="hidden sm:block">•</span>
+                                <span>Qty: {item.quantity}</span>
+                              </div>
+                            </div>
+                            
+                            <div className="w-full sm:w-auto text-right sm:text-left">
+                              <span className="font-medium text-base sm:text-lg">₹{item?.price?.toFixed(2)}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Address Section */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                      <div className="bg-primary-light/10 p-4 sm:p-6 rounded-xl shadow-xs">
+                        <h3 className="text-lg font-medium text-primary mb-3">Shipping Address</h3>
+                        <div className="text-textColor-muted space-y-1.5 text-sm">
+                          {formatAddress(myOrder?.shippingInfo)}
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Order Items */}
-                <div className="lg:col-span-2 space-y-6">
-                  <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
-                    <h3 className="text-lg font-medium text-primary mb-6">Order Items ({myOrder?.products?.length})</h3>
-                    
-                    <div className="space-y-6">
-                      {myOrder?.products?.map((item, index) => (
-                        <div key={index} className="flex items-start gap-5">
-                          <div className="w-24 h-24 relative rounded-lg overflow-hidden bg-gray-100 shrink-0">
-                            <Image
-                              src={item.image}
-                              alt={item.name}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 640px) 96px, 128px"
-                            />
-                          </div>
-                          
-                          <div className="flex-1 min-w-0">
-                            <Link 
-                              href={`/products/${item?.id}`}
-                              className="text-lg font-medium hover:text-primary transition-colors truncate block"
-                            >
-                              {item.name}
-                            </Link>
-                            <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-textColor-muted">
-                              <span className="bg-gray-100 px-3 py-1 rounded-md">Size: {item?.size}</span>
-                              <span>Quantity: {item.quantity}</span>
-                            </div>
-                          </div>
-                          
-                          <div className="text-right">
-                            <span className="font-medium text-lg">₹{item?.price?.toFixed(2)}</span>
-                          </div>
+                      </div>
+                      
+                      <div className="bg-primary-light/10 p-4 sm:p-6 rounded-xl shadow-xs">
+                        <h3 className="text-lg font-medium text-primary mb-3">Billing Address</h3>
+                        <div className="text-textColor-muted space-y-1.5 text-sm">
+                          {formatAddress(myOrder?.shippingInfo)}
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  {/* Address Section */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
-                      <h3 className="text-lg font-medium text-primary mb-4">Shipping Address</h3>
-                      <div className="text-textColor-muted space-y-1.5">
-                        {formatAddress(myOrder?.shippingInfo)}
-                      </div>
-                    </div>
-                    
-                    <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs">
-                      <h3 className="text-lg font-medium text-primary mb-4">Billing Address</h3>
-                      <div className="text-textColor-muted space-y-1.5">
-                        {formatAddress(myOrder?.shippingInfo)}
                       </div>
                     </div>
                   </div>
-                </div>
-                
-                {/* Order Summary */}
-                <div className="   bg-primary-light/10 p-6 rounded-xl shadow-xs h-fit sticky top-6">
-                  <h3 className="text-lg font-medium text-primary mb-6">Order Summary</h3>
-                  
-                  <div className="space-y-4">
-                    <div className="flex justify-between">
-                      <span className="text-textColor-muted">Subtotal</span>
-                      <span className="font-medium">₹{myOrder?.totalPrice?.toFixed(2)}</span>
-                    </div>
+
+                  {/* Order Summary */}
+                  <div className="bg-primary-light/10 p-4 sm:p-6 rounded-xl shadow-xs lg:sticky lg:top-6">
+                    <h3 className="text-lg font-medium text-primary mb-4 sm:mb-6">Order Summary</h3>
                     
-                    <div className="flex justify-between">
-                      <span className="text-textColor-muted">Shipping</span>
-                      <span className="font-medium">
-                        {myOrder.shipping === 0 ? 'Free' : `₹${myOrder?.shipping_fee?.toFixed(2)}`}
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between">
-                      <span className="text-textColor-muted">Tax</span>
-                      <span className="font-medium">₹{0}</span>
-                    </div>
-                    
-                    <div className="border-t border-gray-200 pt-4 flex justify-between font-medium text-lg">
-                      <span>Total</span>
-                      <span className="text-primary">₹{myOrder?.totalPrice?.toFixed(2)}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6 pt-6 border-t border-gray-200">
-                    <h4 className="text-base font-medium mb-3">Payment Method</h4>
-                    <p className="text-textColor-muted">{myOrder?.paymentMethod}</p>
-                    
-                    {myOrder?.trackingNumber && (
-                      <div className="mt-6 pt-6 border-t border-gray-200">
-                        <h4 className="text-base font-medium mb-3">Tracking Details</h4>
-                        <p className="text-textColor-muted mb-1">Tracking Number:</p>
-                        <p className="font-mono text-primary break-all">{myOrder?.trackingNumber}</p>
+                    <div className="space-y-3 sm:space-y-4">
+                      <div className="flex justify-between text-sm sm:text-base">
+                        <span className="text-textColor-muted">Subtotal</span>
+                        <span className="font-medium">₹{myOrder?.totalPrice?.toFixed(2)}</span>
                       </div>
-                    )}
-                  </div>
-                  
-                  <div className="mt-6 space-y-4">
-                    {/* <button className="w-full btn-outline-primary py-3.5 text-sm font-medium rounded-lg hover:shadow-sm transition-all">
-                      Download Invoice
-                    </button> */}
-                    <DownloadInvoiceButton order={myOrder} />
-                    {myOrder?.status === 'delivered' && (
-                      <button className="w-full btn-primary py-3.5 text-sm font-medium rounded-lg hover:shadow-lg transition-all">
-                        Write a Review
-                      </button>
-                    )}
+                      
+                      <div className="flex justify-between text-sm sm:text-base">
+                        <span className="text-textColor-muted">Shipping</span>
+                        <span className="font-medium">
+                          {myOrder.shipping === 0 ? 'Free' : `₹${myOrder?.shipping_fee?.toFixed(2)}`}
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between text-sm sm:text-base">
+                        <span className="text-textColor-muted">Tax</span>
+                        <span className="font-medium">₹{0}</span>
+                      </div>
+                      
+                      <div className="border-t border-gray-200 pt-3 sm:pt-4 flex justify-between font-medium text-base sm:text-lg">
+                        <span>Total</span>
+                        <span className="text-primary">₹{myOrder?.totalPrice?.toFixed(2)}</span>
+                      </div>
+                    </div>
                     
-                    {(order?.status === 'processing' || order?.status === 'shipped') && (
-                      <button className="w-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white py-3.5 text-sm font-medium rounded-lg transition-colors">
-                        Cancel Order
-                      </button>
-                    )}
+                    <div className="mt-6 pt-5 border-t border-gray-200">
+                      <h4 className="text-base font-medium mb-2">Payment Method</h4>
+                      <p className="text-textColor-muted text-sm">{myOrder?.paymentMethod}</p>
+                      
+                      {myOrder?.trackingNumber && (
+                        <div className="mt-5 pt-5 border-t border-gray-200">
+                          <h4 className="text-base font-medium mb-2">Tracking Details</h4>
+                          <p className="text-textColor-muted text-sm mb-1">Tracking Number:</p>
+                          <p className="font-mono text-primary text-sm break-all">{myOrder?.trackingNumber}</p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="mt-6 space-y-3">
+                      <DownloadInvoiceButton order={myOrder} />
+                      {myOrder?.status === 'delivered' && (
+                        <button className="w-full btn-primary py-2.5 sm:py-3 text-sm font-medium rounded-lg hover:shadow-lg transition-all">
+                          Write a Review
+                        </button>
+                      )}
+                      
+                      {(order?.status === 'processing' || order?.status === 'shipped') && (
+                        <button className="w-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white py-2.5 sm:py-3 text-sm font-medium rounded-lg transition-colors">
+                          Cancel Order
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </main>
-  </div>
+      </main>
+    </div>
   );
 } 
