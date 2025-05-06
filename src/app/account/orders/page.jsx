@@ -221,7 +221,7 @@ export default function OrdersPage() {
                       ? "You haven't placed any orders yet." 
                       : `You don't have any ${activeFilter} orders.`}
                   </p>
-                  <Link href="/products" className="btn-primary inline-block mt-6 px-8 py-3.5 text-sm font-medium rounded-lg">
+                  <Link href="/" className="btn-primary inline-block mt-6 px-8 py-3.5 text-sm font-medium rounded-lg">
                     Start Shopping
                   </Link>
                 </div>

@@ -80,7 +80,6 @@ export default function ProductDetailPage() {
     
     const basePrice = product.discountPrice || product.price;
     const sizeAdjustedPrice = basePrice * priceMultiplier;
-    
     addToCart({
       ...product,
       productId: product.id,

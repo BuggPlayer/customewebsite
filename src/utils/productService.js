@@ -16,7 +16,7 @@ export const fetchProducts = async () => {
       throw new Error('Failed to fetch products');
     }
     const products = await response.json();
-    
+
     // Process product data to format we need
     return products.map(product => ({
       id: product._id.$oid,
@@ -25,6 +25,9 @@ export const fetchProducts = async () => {
       category: product.category,
       brand: product.brand,
       price: product.price,
+      sellerId: product.
+      sellerId.$oid
+      ,
       discountPrice: calculateDiscountedPrice(product.price, product.discount),
       discount: product.discount,
       description: product.description,
@@ -33,6 +36,7 @@ export const fetchProducts = async () => {
       rating: product.rating || 0,
       scent: extractScentFromDescription(product.description)
     }));
+    
   } catch (error) {
     console.error('Error fetching products:', error);
     return [];

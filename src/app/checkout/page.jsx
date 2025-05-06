@@ -14,6 +14,7 @@ export default function CheckoutPage() {
   // const userInfo = JSON.parse(localStorage.getItem("user-info"));
   const [userInfo, setUserInfo] = useState(null);
 
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // This ensures the code only runs on the client side
@@ -200,19 +201,24 @@ export default function CheckoutPage() {
   useEffect(() => {
 
     console.log("errorMessage0---",errorMessage, successMessage)
-    if (successMessage) {
-      toast.success(successMessage);
-            clearCart();
-            router.push('/');
-      // setShowConfirmationModal(true);
-      // setTimeout(() => dispatch(messageClear()), 3000);
-    }
+    // inside your effect or function:
+if (successMessage) {
+  setOrderPlaced(true);
+}
+    // if (successMessage) {
+    //   // toast.success(successMessage);
+    //         // clearCart();
+    //         // router.push('/');
+    //         <OrderSuccessPage />
+    //   // setShowConfirmationModal(true);
+    //   // setTimeout(() => dispatch(messageClear()), 3000);
+    // }
     if (errorMessage) {
       // alert("wefrb" ,errorMessage)
       toast.error(errorMessage);
       // setTimeout(() => dispatch(messageClear()), 3000);
     }
-  }, [successMessage, errorMessage]);
+  }, [successMessage, errorMessage, dispatch]);
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -229,51 +235,109 @@ export default function CheckoutPage() {
       </div>
     );
   }
-  
+
+
   if (orderPlaced) {
     return (
-      <div className="min-h-screen bg-background">
-        <main className="py-10 md:py-16">
-          <div className="container mx-auto px-4 max-w-3xl">
-            <div className="bg-background-secondary border border-primary/5 rounded-lg p-8 text-center">
-              <div className="mb-6 flex justify-center">
-                <div className="rounded-full bg-green-100 p-3">
-                  <svg className="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="w-full max-w-3xl">
+          {/* Success Card - Now properly centered */}
+          <div className="bg-background-secondary border border-primary/10 rounded-xl p-6 sm:p-8 lg:p-10 text-center shadow-sm">
+            
+            {/* Success Icon with Animation */}
+            <div className="mb-6 flex justify-center">
+              <div className="relative">
+                <div className="rounded-full bg-green-100/80 p-3 animate-pulse">
+                  <div className="rounded-full bg-green-100 p-3 animate-ping absolute inset-0"></div>
+                  <svg 
+                    className="h-12 w-12 text-green-600 relative" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth="2" 
+                      d="M5 13l4 4L19 7"
+                    ></path>
                   </svg>
                 </div>
               </div>
-              
-              <h1 className="text-2xl md:text-3xl font-light text-primary mb-4">Order Placed Successfully!</h1>
-              <p className="text-textColor-muted mb-6">
-                Thank you for your order. We have received your purchase request and will process it shortly.
-              </p>
-              
-              <div className="bg-primary/5 rounded-lg p-4 mb-6">
-                <p className="text-textColor-secondary font-medium">Order ID: <span className="text-primary">12345678</span></p>
-                <p className="text-textColor-muted mt-1">Please save this order ID for tracking your order.</p>
-              </div>
-              
-              <div className="space-y-3 mb-6">
-                <p className="text-textColor-muted">
-                  A confirmation email with order details has been sent to <span className="font-medium">{formData.email}</span>
-                </p>
-                <p className="text-textColor-muted">
-                  Your order will be delivered to <span className="font-medium">{formData.address}, {formData.city}, {formData.state} - {formData.postalCode}</span>
-                </p>
-              </div>
-              
-              <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
-                <Link href="/account/orders" className="btn-primary py-3 px-6">
-                  View Order
-                </Link>
-                <Link href="/products" className="btn-outline-primary py-3 px-6">
-                  Continue Shopping
-                </Link>
+            </div>
+            
+            {/* Success Heading */}
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-primary mb-4">
+              Order Placed Successfully!
+            </h1>
+            
+            {/* Success Message */}
+            <p className="text-textColor-muted mb-6 text-base sm:text-lg max-w-lg mx-auto">
+              Thank you for your order. We've received your purchase and will begin processing it shortly.
+            </p>
+            
+            {/* Order ID Card */}
+            <div className="bg-primary/5 rounded-lg p-4 sm:p-5 mb-6 border border-primary/10 mx-auto max-w-md">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+                <span className="text-textColor-secondary font-medium whitespace-nowrap">
+                  Order ID:
+                </span>
+                <span className="text-primary font-semibold text-lg sm:text-xl tracking-wider">
+                  {orderId || '12345678'}
+                </span>
+                <button 
+                  onClick={() => navigator.clipboard.writeText(orderId)}
+                  className="text-primary hover:text-primary-dark text-sm flex items-center gap-1"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+                  </svg>
+                  Copy
+                </button>
               </div>
             </div>
+            
+            {/* Delivery Info */}
+            <div className="mb-8 space-y-4 max-w-md mx-auto">
+              <div className="flex items-center justify-center gap-3 text-textColor-muted">
+                <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                <span>Confirmation sent to <strong>{formData.email}</strong></span>
+              </div>
+              
+              <div className="flex items-center justify-center gap-3 text-textColor-muted">
+                <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <span>Delivering to <strong>{formData.address}, {formData.city}</strong></span>
+              </div>
+            </div>
+            
+            {/* Action Buttons - Centered */}
+            <div className="flex flex-col sm:flex-row justify-center gap-3">
+              <Link 
+                href="/account/orders" 
+                className="btn-primary py-3 px-6 flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                View Order
+              </Link>
+              <Link 
+                href="/" 
+                className="btn-outline-primary py-3 px-6 flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                </svg>
+                Continue Shopping
+              </Link>
+            </div>
           </div>
-        </main>
+        </div>
       </div>
     );
   }
