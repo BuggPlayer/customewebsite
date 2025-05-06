@@ -136,7 +136,11 @@ export default function CheckoutPage() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    const user = localStorage.getItem('user-info');
+    if(!user){
+ router.push('/auth/signin');
+      
+    }
     if (!validateForm()) {
       // Scroll to the first error
       const firstErrorField = Object.keys(errors)[0];
